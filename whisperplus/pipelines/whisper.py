@@ -51,6 +51,7 @@ class SpeechToTextPipeline:
             model=self.model,
             torch_dtype=torch.float16,
             chunk_length_s=30,
+            max_new_tokens=128,
             batch_size=24,
             return_timestamps=True,
             device=self.device,
