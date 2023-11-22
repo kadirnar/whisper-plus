@@ -5,6 +5,19 @@ from whisperplus.utils.download_utils import download_and_convert_to_mp3
 
 
 def main(url, model_id, language_choice):
+    """
+    Main function that downloads and converts a video to MP3 format, performs speech-to-text conversion using
+    a specified model, and returns the transcript along with the video path.
+
+    Args:
+        url (str): The URL of the video to download and convert.
+        model_id (str): The ID of the speech-to-text model to use.
+        language_choice (str): The language choice for the speech-to-text conversion.
+
+    Returns:
+        transcript (str): The transcript of the speech-to-text conversion.
+        video_path (str): The path of the downloaded video.
+    """
     video_path = download_and_convert_to_mp3(url)
     pipeline = SpeechToTextPipeline(model_id)
     transcript = pipeline(audio_path=video_path, model_id=model_id, language=language_choice)
@@ -61,7 +74,7 @@ def app():
         gr.Examples(
             examples=[
                 [
-                    "https://www.youtube.com/watch?v=HDX8BE2Pje8",
+                    "https://www.youtube.com/watch?v=di3rHkEZuUw",
                     "openai/whisper-large-v3",
                     "English",
                 ],
