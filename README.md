@@ -43,7 +43,7 @@ transcript = pipeline(
 return transcript
 ```
 
-### Contri
+### Contributing
 
 ```bash
 pip install -r dev-requirements.txt
