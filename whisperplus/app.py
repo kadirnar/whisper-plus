@@ -4,14 +4,10 @@ from whisperplus.pipelines.whisper import SpeechToTextPipeline
 from whisperplus.utils.download_utils import download_and_convert_to_mp3
 
 
-def main(url, language_choice):
+def main(url, model_id, language_choice):
     video_path = download_and_convert_to_mp3(url)
-    pipeline = SpeechToTextPipeline()
-    transcript = pipeline(audio_path=video_path, model_id="openai/whisper-large-v3", language=language_choice)
-    words_to_delete = ["Altyazımiyorum", "Altyazı M.K"]
-
-    for word in words_to_delete:
-        transcript = transcript.replace(word, '')
+    pipeline = SpeechToTextPipeline(model_id)
+    transcript = pipeline(audio_path=video_path, model_id=model_id, language=language_choice)
 
     return transcript, video_path
 
@@ -24,31 +20,60 @@ def app():
 
                 language_choice = gr.Dropdown(
                     choices=[
-                        "english",
-                        "turkish",
-                        "german",
-                        "french",
-                        "chinese",
-                        "japanese",
-                        "korean",
+                        "English",
+                        "Turkish",
+                        "Spanish",
+                        "French",
+                        "Chinese",
+                        "Japanese",
+                        "Korean",
                     ],
-                    value="turkish",
+                    value="Turkish",
                     label="Language",
                 )
-
+                whisper_model_id = gr.Dropdown(
+                    choices=[
+                        "openai/whisper-large-v3",
+                        "openai/whisper-large",
+                        "openai/whisper-medium",
+                        "openai/whisper-base",
+                        "openai/whisper-small",
+                        "openai/whisper-tiny",
+                    ],
+                    value="openai/whisper-large-v3",
+                    label="Whisper Model",
+                )
                 whisperplus_in_predict = gr.Button(value="Generator")
 
             with gr.Column():
-                output_text = gr.Textbox(placeholder="Output Text")
+                output_text = gr.Textbox(label="Output Text")
                 output_audio = gr.Audio(label="Output Audio")
 
         whisperplus_in_predict.click(
             fn=main,
             inputs=[
                 youtube_url_path,
+                whisper_model_id,
                 language_choice,
             ],
             outputs=[output_text, output_audio],
+        )
+        gr.Examples(
+            examples=[
+                [
+                    "https://www.youtube.com/watch?v=HDX8BE2Pje8",
+                    "openai/whisper-large-v3",
+                    "English",
+                ],
+            ],
+            fn=main,
+            inputs=[
+                youtube_url_path,
+                whisper_model_id,
+                language_choice,
+            ],
+            outputs=[output_text, output_audio],
+            cache_examples=False,
         )
 
 
@@ -64,11 +89,12 @@ with gradio_app:
         """
         <h3 style='text-align: center'>
         Follow me for more!
-        <a href='https://twitter.com/kadirnar_ai' target='_blank'>Twitter</a> | <a href='https://github.com/kadirnar' target='_blank'>Github</a> | <a href='https://www.linkedin.com/in/kadir-nar/' target='_blank'>Linkedin</a>
+        <a href='https://twitter.com/kadirnar_ai' target='_blank'>Twitter</a> | <a href='https://github.com/kadirnar' target='_blank'>Github</a> | <a href='https://www.linkedin.com/in/kadir-nar/' target='_blank'>Linkedin</a>  | <a href='https://www.huggingface.co/kadirnar/' target='_blank'>HuggingFace</a>
         </h3>
         """)
     with gr.Row():
         with gr.Column():
             app()
 
-gradio_app.launch()
+gradio_app.queue()
+gradio_app.launch(debug=True)

@@ -5,12 +5,12 @@ from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 class SpeechToTextPipeline:
     """Class for converting audio to text using a pre-trained speech recognition model."""
 
-    def __init__(self):
+    def __init__(self, model_id: str = "openai/whisper-large-v3"):
         self.model = None
         self.device = None
 
         if self.model is None:
-            self.load_model()
+            self.load_model(model_id)
 
         self.set_device()
 
