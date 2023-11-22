@@ -1,0 +1,5 @@
+gradio==4.5.0
+pytube==15.0.0
+torch==2.1.0
+transformers==4.35.2
+accelerate
