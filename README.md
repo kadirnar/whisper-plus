@@ -33,17 +33,21 @@ To use the whisperplus library, follow the steps below for different tasks:
 ```python
 from whisperplus import SpeechToTextPipeline, download_and_convert_to_mp3
 
+# Define the URL of the YouTube video that you want to convert to text.
 url = "https://www.youtube.com/watch?v=di3rHkEZuUw"
-video_path = download_and_convert_to_mp3(url)
-pipeline = SpeechToTextPipeline(model_id="openai/whisper-large-v3")
-transcript = pipeline(
-    audio_path=video_path, model_id="openai/whisper-large-v3", language="english
-)
 
-return transcript
+# Initialize the Speech to Text Pipeline with the specified model.
+audio_path = download_and_convert_to_mp3(url)
+pipeline = SpeechToTextPipeline(model_id="openai/whisper-large-v3")
+
+# Run the pipeline on the audio file.
+transcript = pipeline(audio_path=audio_path, model_id="openai/whisper-large-v3", language="english")
+
+# Print the transcript of the audio.
+print(transcript)
 ```
 
-### Contributing
+### Contributing
 
 ```bash
 pip install -r dev-requirements.txt
