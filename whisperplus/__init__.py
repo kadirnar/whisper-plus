@@ -1,3 +1,4 @@
+from whisperplus.pipelines.summarization import TextSummarizationPipeline
 from whisperplus.pipelines.whisper import SpeechToTextPipeline
 from whisperplus.utils.download_utils import download_and_convert_to_mp3
 
