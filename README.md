@@ -49,6 +49,16 @@ transcript = pipeline(
 print(transcript)
 ```
 
+### Summarization
+
+```python
+from whisperplus.pipelines.summarization import TextSummarizationPipeline
+
+summarizer = TextSummarizationPipeline(model_id="facebook/bart-large-cnn")
+summary = summarizer.summarize(transcript)
+print(summary[0]["summary_text"])
+```
+
 ### Contributing
 
 ```bash
