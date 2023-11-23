@@ -41,7 +41,9 @@ audio_path = download_and_convert_to_mp3(url)
 pipeline = SpeechToTextPipeline(model_id="openai/whisper-large-v3")
 
 # Run the pipeline on the audio file.
-transcript = pipeline(audio_path=audio_path, model_id="openai/whisper-large-v3", language="english")
+transcript = pipeline(
+    audio_path=audio_path, model_id="openai/whisper-large-v3", language="english"
+)
 
 # Print the transcript of the audio.
 print(transcript)

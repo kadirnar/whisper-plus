@@ -1,19 +1,17 @@
-import os
 import logging
+import os
 from pathlib import Path
 from typing import Optional
 
-from pytube import YouTube
 from moviepy.editor import AudioFileClip
+from pytube import YouTube
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
-def download_and_convert_to_mp3(
-    url: str, output_path: str = "output", filename: str = "test"
-) -> Optional[str]:
+def download_and_convert_to_mp3(url: str,
+                                output_path: str = "output",
+                                filename: str = "test") -> Optional[str]:
     try:
         yt = YouTube(url)
         audio_stream = yt.streams.filter(only_audio=True).first()
@@ -30,17 +28,13 @@ def download_and_convert_to_mp3(
         downloaded_file_path = audio_stream.download(output_path)
 
         audio_clip = AudioFileClip(downloaded_file_path)
-        audio_clip.write_audiofile(
-            mp3_file_path, codec="libmp3lame", verbose=False, logger=None
-        )
+        audio_clip.write_audiofile(mp3_file_path, codec="libmp3lame", verbose=False, logger=None)
         audio_clip.close()
 
         if Path(downloaded_file_path).suffix != ".mp3":
             os.remove(downloaded_file_path)
 
-        logging.info(
-            f"Download and conversion successful. File saved at: {mp3_file_path}"
-        )
+        logging.info(f"Download and conversion successful. File saved at: {mp3_file_path}")
         return str(mp3_file_path)
 
     except Exception as e:
