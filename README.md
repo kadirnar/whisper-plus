@@ -59,6 +59,31 @@ summary = summarizer.summarize(transcript)
 print(summary[0]["summary_text"])
 ```
 
+### Speaker Diarization
+
+```python
+from whisperplus import (
+    ASRDiarizationPipeline,
+    download_and_convert_to_mp3,
+    format_speech_to_dialogue,
+)
+
+audio_path = download_and_convert_to_mp3("https://www.youtube.com/watch?v=mRB14sFHw2E")
+
+device = "cuda"  # cpu or mps
+pipeline = ASRDiarizationPipeline.from_pretrained(
+    asr_model="openai/whisper-large-v3",
+    diarizer_model="pyannote/speaker-diarization",
+    use_auth_token=False,
+    chunk_length_s=30,
+    device=device,
+)
+
+output_text = pipeline(audio_path)
+dialogue = format_speech_to_dialogue(output_text)
+print(dialogue)
+```
+
 ### Contributing
 
 ```bash
