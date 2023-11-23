@@ -1,5 +1,9 @@
+import logging
+
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 class SpeechToTextPipeline:
@@ -11,6 +15,8 @@ class SpeechToTextPipeline:
 
         if self.model is None:
             self.load_model(model_id)
+        else:
+            logging.info("Model already loaded.")
 
         self.set_device()
 
@@ -21,6 +27,8 @@ class SpeechToTextPipeline:
         else:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+        logging.info(f"Using device: {self.device}")
+
     def load_model(self, model_id: str = "openai/whisper-large-v3"):
         """
         Loads the pre-trained speech recognition model and moves it to the specified device.
@@ -28,9 +36,11 @@ class SpeechToTextPipeline:
         Args:
             model_id (str): Identifier of the pre-trained model to be loaded.
         """
+        logging.info("Loading model...")
         model = AutoModelForSpeechSeq2Seq.from_pretrained(
             model_id, torch_dtype=torch.float16, low_cpu_mem_usage=True, use_safetensors=True)
         model.to(self.device)
+        logging.info("Model loaded successfully.")
 
         self.model = model
 
@@ -60,6 +70,6 @@ class SpeechToTextPipeline:
             model_kwargs={"use_flash_attention_2": True},
             generate_kwargs={"language": language},
         )
-
+        logging.info("Transcribing audio...")
         result = pipe(audio_path)["text"]
         return result
