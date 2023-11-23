@@ -61,5 +61,5 @@ class SpeechToTextPipeline:
             generate_kwargs={"language": language},
         )
 
-        result = pipe(audio_path)["text"]
+        result = pipe(audio_path)["text"]  # type: ignore
         return result
