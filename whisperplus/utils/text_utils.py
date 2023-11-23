@@ -9,7 +9,7 @@ def format_speech_to_dialogue(speech_text):
         str: Formatted text in dialogue format.
     """
     # Parse the given text appropriately
-    dialog_list = eval(speech_text)
+    dialog_list = eval(str(speech_text))
     dialog_text = ""
 
     for i, turn in enumerate(dialog_list):
