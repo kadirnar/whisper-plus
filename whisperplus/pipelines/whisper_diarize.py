@@ -24,7 +24,7 @@ class ASRDiarizationPipeline:
     @classmethod
     def from_pretrained(
         cls,
-        asr_model: Optional[str] = "openai/whisper-medium",
+        asr_model: Optional[str] = "openai/whisper-large-v3",
         *,
         diarizer_model: Optional[str] = "pyannote/speaker-diarization",
         chunk_length_s: Optional[int] = 30,
@@ -35,7 +35,9 @@ class ASRDiarizationPipeline:
             "automatic-speech-recognition",
             model=asr_model,
             chunk_length_s=chunk_length_s,
-            token=use_auth_token,  # 08/25/2023: Changed argument from use_auth_token to token
+            token=use_auth_token,
+            batch_size=24,
+            return_timestamps=True,
             **kwargs,
         )
         diarization_pipeline = Pipeline.from_pretrained(diarizer_model, use_auth_token=use_auth_token)
