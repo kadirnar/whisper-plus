@@ -57,6 +57,10 @@ jobs:
       - name: Update pip
         run: python -m pip install --upgrade pip
 
+      - name: Install local package with dev and readers dependencies
+        run: >
+            pip install -e .[dev]
+
       - name: Check styling with pre-commit
         run: |
           pre-commit install
