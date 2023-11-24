@@ -58,22 +58,22 @@ jobs:
             pre-commit install
             pre-commit run --all-files
 
-      - name: Install PyTorch on Linux and Windows
-        if: >
-          matrix.operating-system == 'ubuntu-latest' ||
-          matrix.operating-system == 'windows-latest'
-        run: >
-          pip install torch==${{ matrix.torch-version }}+cpu
-          -f https://download.pytorch.org/whl/torch_stable.html
+        - name: Install PyTorch on Linux and Windows
+          if: >
+            matrix.operating-system == 'ubuntu-latest' ||
+            matrix.operating-system == 'windows-latest'
+          run: >
+            pip install torch==${{ matrix.torch-version }}+cpu
+            -f https://download.pytorch.org/whl/torch_stable.html
 
-      - name: Install PyTorch on MacOS
-        if: matrix.operating-system == 'macos-latest'
-        run: pip install torch==${{ matrix.torch-version }}
+        - name: Install PyTorch on MacOS
+          if: matrix.operating-system == 'macos-latest'
+          run: pip install torch==${{ matrix.torch-version }}
 
-      - name: Install latest whisperplus package
-        run: >
-          pip install --upgrade --force-reinstall whisperplus
+        - name: Install latest whisperplus package
+          run: >
+            pip install --upgrade --force-reinstall whisperplus
 
-      - name: Unittest whisperplus
-        run: |
-          python -m unittest
+        - name: Unittest whisperplus
+          run: |
+            python -m unittest
