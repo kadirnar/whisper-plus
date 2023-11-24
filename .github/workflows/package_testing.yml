@@ -59,7 +59,7 @@ jobs:
           matrix.operating-system == 'ubuntu-latest' ||
           matrix.operating-system == 'windows-latest'
         run: >
-          pip install torch==${{ matrix.torch-version }}+cpu
+          pip install torch==${{ matrix.torch-version }}
           -f https://download.pytorch.org/whl/torch_stable.html
 
       - name: Install PyTorch on MacOS
