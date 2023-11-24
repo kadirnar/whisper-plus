@@ -14,7 +14,7 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ['3.10', '3.11', '3.12']
-        torch-version:  ["2.1.0", "2.1.1"]
+        torch-version:  ["2.0.0", "2.0.1"]
       fail-fast: false
 
     steps:
