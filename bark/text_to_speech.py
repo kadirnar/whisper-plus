@@ -24,7 +24,6 @@ class TextToSpeechPipeline:
 
         audio_array = generate_audio(self.input_text)
         # Convert NumPy array to AudioSegment
-        # Convert NumPy array to AudioSegment
         audio_array = (audio_array * 32767).astype(np.int16)  # type: ignore # Scale to 16-bit integer
         audio_segment = AudioSegment(
             audio_array.tobytes(), frame_rate=SAMPLE_RATE, sample_width=2, channels=1)
