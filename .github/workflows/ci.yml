@@ -1,20 +1,19 @@
-name: Package Testing
+name: Python package CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [main]
   pull_request:
-    branches: [ master ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ${{ matrix.operating-system }}
-
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
         python-version: [3.8, 3.9, 3.10, 3.11]
-        torch-version: [2.1.0, 2.1.1]
+        torch-version:  [2.1.0,2.1.1]
       fail-fast: false
 
     steps:
@@ -65,10 +64,10 @@ jobs:
         if: matrix.operating-system == 'macos-latest'
         run: pip install torch==${{ matrix.torch-version }}
 
-      - name: Install latest whisper-plus
+      - name: Install whisperplus package from local setup.py
         run: >
-          pip install --upgrade --force-reinstall whisperplus
+          pip install -e .
 
-      - name: Unittest whisper-plus
+      - name: Unittest whisperplus
         run: |
           python -m unittest
