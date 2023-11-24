@@ -7,8 +7,9 @@ from bark import SAMPLE_RATE, generate_audio, preload_models
 
 class TextToSpeechPipeline:
 
-    def __init__(self, input_text: str):
+    def __init__(self, input_text: str, output_path: str = "output.wav"):
         self.input_text = input_text
+        self.output_path = output_path
 
         if not self.input_text:
             logging.warning("Input text is empty. Cannot convert to speech.")
@@ -20,4 +21,4 @@ class TextToSpeechPipeline:
             return
 
         audio_array = generate_audio(self.input_text)
-        write("output2.wav", rate=SAMPLE_RATE, data=audio_array)
+        write(self.output_path, rate=SAMPLE_RATE, data=audio_array)
