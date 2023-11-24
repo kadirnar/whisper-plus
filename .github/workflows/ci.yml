@@ -1,32 +1,37 @@
-name: Python package CI
-
+name: Continuous Integration
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '**.md'
+      - '**.ipynb'
+
   pull_request:
     branches: [main]
+    paths-ignore:
+      - '**.md'
+      - '**.ipynb'
 
 jobs:
   build:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10", "3.11"]
-        torch-version:  ["2.0.0", "2.0.1", "2.1.1"]
+        python-version: [3.8, 3.9, '3.10', '3.11']
       fail-fast: false
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Restore Ubuntu cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         if: matrix.operating-system == 'ubuntu-latest'
         with:
           path: ~/.cache/pip
@@ -34,7 +39,7 @@ jobs:
           restore-keys: ${{ matrix.operating-system }}-${{ matrix.python-version }}-
 
       - name: Restore MacOS cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         if: matrix.operating-system == 'macos-latest'
         with:
           path: ~/Library/Caches/pip
@@ -42,7 +47,7 @@ jobs:
           restore-keys: ${{ matrix.operating-system }}-${{ matrix.python-version }}-
 
       - name: Restore Windows cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         if: matrix.operating-system == 'windows-latest'
         with:
           path: ~\AppData\Local\pip\Cache
@@ -52,22 +57,7 @@ jobs:
       - name: Update pip
         run: python -m pip install --upgrade pip
 
-      - name: Install PyTorch on Linux and Windows
-        if: >
-          matrix.operating-system == 'ubuntu-latest' ||
-          matrix.operating-system == 'windows-latest'
-        run: >
-          pip install torch==${{ matrix.torch-version }}
-          -f https://download.pytorch.org/whl/torch_stable.html
-
-      - name: Install PyTorch on MacOS
-        if: matrix.operating-system == 'macos-latest'
-        run: pip install torch==${{ matrix.torch-version }}
-
-      - name: Install whisperplus package from local setup.py
-        run: >
-          pip install -e .
-
-      - name: Unittest whisperplus
+      - name: Check styling with pre-commit
         run: |
-          python -m unittest
+          pre-commit install
+          pre-commit run --all-files
