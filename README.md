@@ -79,7 +79,7 @@ pipeline = ASRDiarizationPipeline.from_pretrained(
     device=device,
 )
 
-output_text = pipeline(audio_path)
+output_text = pipeline(audio_path, num_speakers=2, min_speaker=1, max_speaker=2)
 dialogue = format_speech_to_dialogue(output_text)
 print(dialogue)
 ```
