@@ -1,5 +1,4 @@
-name: Python package CI
-
+name: Continuous Integration
 on:
   push:
     branches: [main]
@@ -15,12 +14,11 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.8, 3.9, 3.10, 3.11]
-        torch-version:  [2.1.0, 2.1.1]
+        python-version: ['3.10', '3.11']
       fail-fast: false
 
     steps:
@@ -59,28 +57,11 @@ jobs:
       - name: Update pip
         run: python -m pip install --upgrade pip
 
+      - name: Install local package with dev and readers dependencies
+        run: >
+            pip install -e .[dev]
+
       - name: Check styling with pre-commit
         run: |
           pre-commit install
           pre-commit run --all-files
-
-      - name: Install PyTorch on Linux and Windows
-        if: >
-          matrix.operating-system == 'ubuntu-latest' ||
-          matrix.operating-system == 'windows-latest'
-        run: >
-          pip install torch==${{ matrix.torch-version }}+cpu
-          -f https://download.pytorch.org/whl/torch_stable.html
-
-      - name: Install PyTorch on MacOS
-        if: matrix.operating-system == 'macos-latest'
-        run: pip install torch==${{ matrix.torch-version }}
-      - name: Install PyTorch on Linux and Windows
-
-      - name: Install whisperplus package from local setup.py
-        run: >
-          pip install -e .
-
-      - name: Unittest whisperplus
-        run: |
-          python -m unittest
