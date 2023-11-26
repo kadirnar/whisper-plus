@@ -1,33 +1,51 @@
 import logging
 
-import numpy as np
-from pydub import AudioSegment
-from scipy.io.wavfile import write
-
-from bark import SAMPLE_RATE, generate_audio, preload_models
+import torch
+from scipy.io.wavfile import write as write_wav
+from transformers import AutoModelForTextToWaveform, AutoProcessor, pipeline
 
 
 class TextToSpeechPipeline:
+    """Class to convert text to speech."""
 
-    def __init__(self, input_text: str, output_path: str = "output.mp3"):
-        self.input_text = input_text
-        self.output_path = output_path
+    def __init__(self, model_id: str = "suno/bark"):
+        self.model = None
+        self.device = None
 
-        if not self.input_text:
-            logging.warning("Input text is empty. Cannot convert to speech.")
-            # You may raise an exception or return a specific value if needed
+        if self.model is None:
+            self.load_model(model_id)
+        else:
+            logging.info("Model is already loaded.")
 
-    def convert_to_speech(self):
-        if not self.input_text:
-            logging.warning("No text to convert to speech. Aborting.")
-            return
+        self.set_device()
 
-        audio_array = generate_audio(self.input_text)
-        # Convert NumPy array to AudioSegment
-        audio_array = (audio_array * 32767).astype(np.int16)  # type: ignore # Scale to 16-bit integer
-        audio_segment = AudioSegment(
-            audio_array.tobytes(), frame_rate=SAMPLE_RATE, sample_width=2, channels=1)
+    def set_device(self):
+        """Set device for model."""
+        if torch.backends.mps.is_available():
+            self.device = "mps"
+        else:
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        audio_segment.export(self.output_path, format="mp3")
+        logging.info(f"Using device: {self.device}")
 
-        print(f"Speech saved to {self.output_path}")
+    def load_model(self, model_id: str = "suno/bark"):
+        logging.info("Loading Model...")
+
+        model = AutoModelForTextToWaveform.from_pretrained(model_id)
+
+        model.to(self.device)  # type: ignore
+        logging.info("Model loaded 🎉")
+        self.model = model
+
+    def __call__(self, text: str, model_id: str = "suno/bark", voice_preset: str = "v2/en_speaker_6"):
+        processor = AutoProcessor.from_pretrained(
+            model_id, torch_dtype=torch.float16, use_flash_attention_2=True, device=self.device)
+        inputs = processor(text, voice_preset)
+        outputs = self.model.generate(**inputs)  # type: ignore
+
+        audio_array = outputs.cpu().numpy().squeeze()
+
+        # save audio
+        sample_rate = self.model.generation_config.sample_rate
+        write_wav("bark_generation.wav", sample_rate, audio_array)
+        print("Generation is done 😎")
