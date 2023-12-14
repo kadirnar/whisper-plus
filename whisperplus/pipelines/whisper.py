@@ -44,7 +44,12 @@ class SpeechToTextPipeline:
 
         self.model = model
 
-    def __call__(self, audio_path: str, trans_path: str, model_id: str = "openai/whisper-large-v3", language: str = "turkish"):
+    def __call__(
+            self,
+            audio_path: str,
+            trans_path: str,
+            model_id: str = "openai/whisper-large-v3",
+            language: str = "turkish"):
         """
         Converts audio to text using the pre-trained speech recognition model.
 
@@ -73,4 +78,4 @@ class SpeechToTextPipeline:
         logging.info("Transcribing audio...")
         result = pipe(audio_path)
         with open(trans_path, "w") as file:
-          file.write(result)
+            file.write(result)
