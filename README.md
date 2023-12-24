@@ -91,10 +91,9 @@ print(dialogue)
 from RAG.chatbot import ChatWithVideo
 
 # Run the query
-query = 'what is mistral?'
+query = "what is mistral?"
 result = ChatWithVideo.run_query(query)
-print("result : ",result)
-
+print("result : ", result)
 ```
 
 ### Contributing

@@ -1,14 +1,12 @@
 import lancedb
+from langchain.chains import RetrievalQA
+from langchain.chat_models import ChatOpenAI
 from langchain.document_loaders import TextLoader
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import CTransformers
-from langchain.chains import RetrievalQA
-from langchain.vectorstores import LanceDB
-from langchain.document_loaders import TextLoader
 from langchain.prompts import PromptTemplate
-from langchain.chat_models import ChatOpenAI
-
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import LanceDB
 
 # Configuration and Constants
 MODEL_NAME = 'sentence-transformers/all-MiniLM-L6-v2'
@@ -18,19 +16,21 @@ LLM_MODEL_TYPE = "mistral"
 TEXT_FILE_PATH = "transcript.text"
 DATABASE_PATH = '/tmp/lancedb'
 
+
 class ChatWithVideo:
+
     @staticmethod
     def load_llm_model():
         try:
             print("Starting to download the Mistral model...")
-            llm_model = CTransformers(model=LLM_MODEL_NAME, model_file=LLM_MODEL_FILE, model_type=LLM_MODEL_TYPE)
+            llm_model = CTransformers(
+                model=LLM_MODEL_NAME, model_file=LLM_MODEL_FILE, model_type=LLM_MODEL_TYPE)
             print("Mistral model successfully loaded.")
             return llm_model
         except Exception as e:
             print(f"Error loading the Mistral model: {e}")
             return None
 
-    
     @staticmethod
     def load_text_file(file_path):
         try:
@@ -81,18 +81,17 @@ class ChatWithVideo:
             print(f"Error preparing documents: {e}")
             return None
 
-
     @staticmethod
     def run_query(query):
         if not query:
             print("No query provided.")
             return "No query provided."
-        
+
         print(f"Running query: {query}")
         docs = ChatWithVideo.load_text_file(TEXT_FILE_PATH)
         if not docs:
             return "Failed to load documents."
-        
+
         documents = ChatWithVideo.prepare_documents(docs)
         if not documents:
             return "Failed to prepare documents."
@@ -106,13 +105,18 @@ class ChatWithVideo:
             return "Failed to setup database."
 
         try:
-            table = db.create_table("pandas_docs", data=[
-                {"vector": embeddings.embed_query("Hello World"), "text": "Hello World", "id": "1"}
-            ], mode="overwrite")
+            table = db.create_table(
+                "pandas_docs",
+                data=[{
+                    "vector": embeddings.embed_query("Hello World"),
+                    "text": "Hello World",
+                    "id": "1"
+                }],
+                mode="overwrite")
             docsearch = LanceDB.from_documents(documents, embeddings, connection=table)
 
             llm = ChatWithVideo.load_llm_model()
-            
+
             if not llm:
                 return "Failed to load LLM model."
 
@@ -123,10 +127,14 @@ class ChatWithVideo:
             {context}
             Question: {question}
             Helpful Answer:"""
-    
+
             QA_CHAIN_PROMPT = PromptTemplate(input_variables=["context", "question"], template=template)
             print("prompt loaded")
-            qa = RetrievalQA.from_chain_type(llm, chain_type='stuff', retriever=docsearch.as_retriever(), chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
+            qa = RetrievalQA.from_chain_type(
+                llm,
+                chain_type='stuff',
+                retriever=docsearch.as_retriever(),
+                chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
             print("Query processed successfully.")
             return qa.run(query)
         except Exception as e:
