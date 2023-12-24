@@ -46,7 +46,8 @@ transcript = pipeline(
 )
 
 # Print the transcript of the audio.
-print(transcript)
+with open("RAG/transcript.txt", "w") as file:
+    file.write(transcript)
 ```
 
 ### Summarization
