@@ -15,7 +15,7 @@ MODEL_NAME = 'sentence-transformers/all-MiniLM-L6-v2'
 LLM_MODEL_NAME = 'TheBloke/Mistral-7B-v0.1-GGUF'
 LLM_MODEL_FILE = 'mistral-7b-v0.1.Q4_K_M.gguf'
 LLM_MODEL_TYPE = "mistral"
-TEXT_FILE_PATH = "/content/moe_blog.text"
+TEXT_FILE_PATH = "transcript.text"
 DATABASE_PATH = '/tmp/lancedb'
 
 class ChatWithVideo:
