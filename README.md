@@ -84,6 +84,18 @@ dialogue = format_speech_to_dialogue(output_text)
 print(dialogue)
 ```
 
+### Chat with Video - RAG
+
+```python
+from RAG.chatbot import ChatWithVideo
+
+# Run the query
+query = 'what is mistral?'
+result = ChatWithVideo.run_query(query)
+print("result : ",result)
+
+```
+
 ### Contributing
 
 ```bash
