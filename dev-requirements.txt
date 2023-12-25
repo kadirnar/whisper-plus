@@ -1,1 +1,6 @@
 pre-commit==3.4.0
+lancedb
+langchain
+openai
+sentence-transformers
+ctransformers
