@@ -13,3 +13,4 @@ langchain
 openai
 sentence-transformers
 ctransformers
+accelerate
