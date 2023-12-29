@@ -7,3 +7,6 @@ Requests==2.31.0
 torch==2.1.0
 torchaudio==2.1.0
 transformers==4.35.2
+pytest==7.4.0
+pytest-cov==4.1.0
+pytest-mock==3.10.0
