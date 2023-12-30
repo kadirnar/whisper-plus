@@ -59,6 +59,21 @@ summary = summarizer.summarize(transcript)
 print(summary[0]["summary_text"])
 ```
 
+If the transcript is longer than the specified maximum sequence length, the summarizer will split the transcript
+into chunks and summarize each chunk individually. The chunks are then concatenated to form the final summary.
+
+The improved summarization pipeline shows below how to use the summarizer with a long length text:
+
+```python
+from whisperplus.pipelines.long_text_support_summarization import (
+    LongTextSupportSummarizationPipeline,
+)
+
+summarizer = LongTextSupportSummarizationPipeline(model_id="facebook/bart-large-cnn")
+summary_text = summarizer.summarize(transcript)
+print(summary_text)
+```
+
 ### Speaker Diarization
 
 ```python
