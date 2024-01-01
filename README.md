@@ -84,6 +84,21 @@ dialogue = format_speech_to_dialogue(output_text)
 print(dialogue)
 ```
 
+### Chat with Video - RAG
+
+```bash
+pip install -r dev-requirements
+```
+
+```python
+from wihsperplus.pipelines.chatbot import ChatWithVideo
+
+# Run the query
+query = "what is mistral?"
+result = ChatWithVideo.run_query(query)
+print("result : ", result)
+```
+
 ### Contributing
 
 ```bash
