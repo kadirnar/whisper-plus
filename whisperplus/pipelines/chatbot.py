@@ -10,6 +10,7 @@ from langchain.vectorstores import LanceDB
 
 
 class ChatWithVideo:
+    DATABASE_PATH = '/tmp/lancedb'  # Default database path
 
     @staticmethod
     def load_llm_model(model_name, model_file, model_type):
@@ -35,10 +36,10 @@ class ChatWithVideo:
             return None
 
     @staticmethod
-    def setup_database(database_path):
+    def setup_database():
         try:
             print("Setting up the database...")
-            db = lancedb.connect(database_path)
+            db = lancedb.connect(DATABASE_PATH)
             print("Database setup complete.")
             return db
         except Exception as e:
@@ -72,7 +73,7 @@ class ChatWithVideo:
             return None
 
     @staticmethod
-    def run_query(query, text_file_path, model_name, llm_model_name, llm_model_file, llm_model_type, database_path):
+    def run_query(query, text_file_path, model_name, llm_model_name, llm_model_file, llm_model_type):
         if not query:
             print("No query provided.")
             return "No query provided."
@@ -89,7 +90,7 @@ class ChatWithVideo:
         if not embeddings:
             return "Failed to prepare embeddings."
 
-        db = ChatWithVideo.setup_database(database_path)
+        db = ChatWithVideo.setup_database()
         if not db:
             return "Failed to setup database."
 
@@ -125,3 +126,21 @@ class ChatWithVideo:
         except Exception as e:
             print(f"Error running query: {e}")
             return f"Error: {e}"
+
+
+#####
+
+from chatbot import ChatWithVideo
+
+# Model configuration
+model_name = 'sentence-transformers/all-MiniLM-L6-v2'
+llm_model_name = 'TheBloke/Mistral-7B-v0.1-GGUF'
+llm_model_file = 'mistral-7b-v0.1.Q4_K_M.gguf'
+llm_model_type = "mistral"
+text_file_path = "transcript.text"
+
+
+# Run the query
+query = "What is mistral?"
+result = ChatWithVideo.run_query(query, text_file_path, model_name, llm_model_name, llm_model_file, llm_model_type)
+print("Result:", result)
