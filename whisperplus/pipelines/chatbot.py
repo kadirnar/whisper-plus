@@ -8,27 +8,18 @@ from langchain.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import LanceDB
 
-# Configuration and Constants
-MODEL_NAME = 'sentence-transformers/all-MiniLM-L6-v2'
-LLM_MODEL_NAME = 'TheBloke/Mistral-7B-v0.1-GGUF'
-LLM_MODEL_FILE = 'mistral-7b-v0.1.Q4_K_M.gguf'
-LLM_MODEL_TYPE = "mistral"
-TEXT_FILE_PATH = "transcript.text"
-DATABASE_PATH = '/tmp/lancedb'
-
 
 class ChatWithVideo:
 
     @staticmethod
-    def load_llm_model():
+    def load_llm_model(model_name, model_file, model_type):
         try:
-            print("Starting to download the Mistral model...")
-            llm_model = CTransformers(
-                model=LLM_MODEL_NAME, model_file=LLM_MODEL_FILE, model_type=LLM_MODEL_TYPE)
-            print("Mistral model successfully loaded.")
+            print(f"Starting to download the {model_name} model...")
+            llm_model = CTransformers(model=model_name, model_file=model_file, model_type=model_type)
+            print(f"{model_name} model successfully loaded.")
             return llm_model
         except Exception as e:
-            print(f"Error loading the Mistral model: {e}")
+            print(f"Error loading the {model_name} model: {e}")
             return None
 
     @staticmethod
@@ -44,17 +35,16 @@ class ChatWithVideo:
             return None
 
     @staticmethod
-    def setup_database():
+    def setup_database(database_path):
         try:
             print("Setting up the database...")
-            db = lancedb.connect(DATABASE_PATH)
+            db = lancedb.connect(database_path)
             print("Database setup complete.")
             return db
         except Exception as e:
             print(f"Error setting up the database: {e}")
             return None
 
-    # embedding model
     @staticmethod
     def prepare_embeddings(model_name):
         try:
@@ -82,13 +72,12 @@ class ChatWithVideo:
             return None
 
     @staticmethod
-    def run_query(query):
+    def run_query(query, text_file_path, model_name, llm_model_name, llm_model_file, llm_model_type, database_path):
         if not query:
             print("No query provided.")
             return "No query provided."
 
-        print(f"Running query: {query}")
-        docs = ChatWithVideo.load_text_file(TEXT_FILE_PATH)
+        docs = ChatWithVideo.load_text_file(text_file_path)
         if not docs:
             return "Failed to load documents."
 
@@ -96,11 +85,11 @@ class ChatWithVideo:
         if not documents:
             return "Failed to prepare documents."
 
-        embeddings = ChatWithVideo.prepare_embeddings(MODEL_NAME)
+        embeddings = ChatWithVideo.prepare_embeddings(model_name)
         if not embeddings:
             return "Failed to prepare embeddings."
 
-        db = ChatWithVideo.setup_database()
+        db = ChatWithVideo.setup_database(database_path)
         if not db:
             return "Failed to setup database."
 
@@ -115,21 +104,17 @@ class ChatWithVideo:
                 mode="overwrite")
             docsearch = LanceDB.from_documents(documents, embeddings, connection=table)
 
-            llm = ChatWithVideo.load_llm_model()
-
+            llm = ChatWithVideo.load_llm_model(llm_model_name, llm_model_file, llm_model_type)
             if not llm:
                 return "Failed to load LLM model."
 
-            template = """Use the following pieces of context to answer the question at the end.
-            If you don't know the answer, just say that you don't know, don't try to make up an answer.
-            Use three sentences maximum and keep the answer as concise as possible.
-            Always say "thanks for asking!" at the end of the answer.
-            {context}
-            Question: {question}
-            Helpful Answer:"""
-
+            template = """Use the following pieces of context to answer the question at the end...
+                          {context}
+                          Question: {question}
+                          Helpful Answer:"""
             QA_CHAIN_PROMPT = PromptTemplate(input_variables=["context", "question"], template=template)
-            print("prompt loaded")
+            print("Prompt loaded")
+
             qa = RetrievalQA.from_chain_type(
                 llm,
                 chain_type='stuff',
