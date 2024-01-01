@@ -139,7 +139,6 @@ class ChatWithVideo:
 # llm_model_type = "mistral"
 # text_file_path = "transcript.text"
 
-
 # # Run the query
 # query = "What is mistral?"
 # result = ChatWithVideo.run_query(query, text_file_path, model_name, llm_model_name, llm_model_file, llm_model_type)
