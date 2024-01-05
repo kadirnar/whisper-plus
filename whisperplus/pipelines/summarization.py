@@ -10,6 +10,7 @@ class TextSummarizationPipeline:
 
     def __init__(self, model_id: str = "facebook/bart-large-cnn"):
         logging.info("Initializing Text Summarization Pipeline")
+        self.device = None
         self.model_id = model_id
         self.model = None
         self.set_device()
