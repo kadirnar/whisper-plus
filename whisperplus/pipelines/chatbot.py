@@ -1,13 +1,13 @@
+import logging
+
 import lancedb
 from langchain.chains import RetrievalQA
-from langchain.llms import CTransformers
 from langchain.document_loaders import TextLoader
 from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.llms import CTransformers
+from langchain.prompts import PromptTemplate
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import LanceDB
-from langchain.prompts import PromptTemplate
-
-import logging
 
 # Configure basic logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 class ChatWithVideo:
+
     def __init__(self, input_file, llm_model_name, llm_model_file, llm_model_type, embedding_model_name):
         self.input_file = input_file
         self.llm_model_name = llm_model_name
@@ -25,7 +26,8 @@ class ChatWithVideo:
     def load_llm_model(self):
         try:
             logger.info(f"Starting to download the {self.llm_model_name} model...")
-            llm_model = CTransformers(model=self.llm_model_name, model_file=self.llm_model_file, model_type=self.llm_model_type)
+            llm_model = CTransformers(
+                model=self.llm_model_name, model_file=self.llm_model_file, model_type=self.llm_model_type)
             logger.info(f"{self.llm_model_name} model successfully loaded.")
             return llm_model
         except Exception as e:
@@ -105,7 +107,11 @@ class ChatWithVideo:
         try:
             table = db.create_table(
                 "pandas_docs",
-                data=[{"vector": embeddings.embed_query("Hello World"), "text": "Hello World", "id": "1"}],
+                data=[{
+                    "vector": embeddings.embed_query("Hello World"),
+                    "text": "Hello World",
+                    "id": "1"
+                }],
                 mode="overwrite")
             docsearch = LanceDB.from_documents(documents, embeddings, connection=table)
 
@@ -136,5 +142,3 @@ class ChatWithVideo:
         except Exception as e:
             logger.error(f"Error running query: {e}")
             return f"Error: {e}"
-
-
