@@ -7,9 +7,15 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import LanceDB
 from langchain.prompts import PromptTemplate
 
+import logging
+
+# Configure basic logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 
 class ChatWithVideo:
-    def __init__(self,input_file ,llm_model_name, llm_model_file, llm_model_type, embedding_model_name):
+    def __init__(self, input_file, llm_model_name, llm_model_file, llm_model_type, embedding_model_name):
         self.input_file = input_file
         self.llm_model_name = llm_model_name
         self.llm_model_file = llm_model_file
@@ -18,70 +24,68 @@ class ChatWithVideo:
 
     def load_llm_model(self):
         try:
-            print(f"Starting to download the {self.llm_model_name} model...")
-            llm_model = CTransformers(
-                model=self.llm_model_name, model_file=self.llm_model_file, model_type=self.llm_model_type)
-            print(f"{self.llm_model_name} model successfully loaded.")
+            logger.info(f"Starting to download the {self.llm_model_name} model...")
+            llm_model = CTransformers(model=self.llm_model_name, model_file=self.llm_model_file, model_type=self.llm_model_type)
+            logger.info(f"{self.llm_model_name} model successfully loaded.")
             return llm_model
         except Exception as e:
-            print(f"Error loading the {self.llm_model_name} model: {e}")
+            logger.error(f"Error loading the {self.llm_model_name} model: {e}")
             return None
-
 
     def load_text_file(self):
         try:
-            print(f"Loading transcript file from {self.input_file}...")
+            logger.info(f"Loading transcript file from {self.input_file}...")
             loader = TextLoader(self.input_file)
             docs = loader.load()
-            print("Transcript file successfully loaded.")
+            logger.info("Transcript file successfully loaded.")
             return docs
         except Exception as e:
-            print(f"Error loading text file: {e}")
+            logger.error(f"Error loading text file: {e}")
             return None
 
     @staticmethod
     def setup_database():
         try:
-            print("Setting up the database...")
+            logger.info("Setting up the database...")
             db = lancedb.connect('/tmp/lancedb')
-            print("Database setup complete.")
+            logger.info("Database setup complete.")
             return db
         except Exception as e:
-            print(f"Error setting up the database: {e}")
+            logger.error(f"Error setting up the database: {e}")
             return None
 
     @staticmethod
     def prepare_embeddings(model_name):
         try:
-            print(f"Preparing embeddings with model: {model_name}...")
+            logger.info(f"Preparing embeddings with model: {model_name}...")
             embeddings = HuggingFaceEmbeddings(model_name=model_name, model_kwargs={'device': 'cpu'})
-            print("Embeddings prepared successfully.")
+            logger.info("Embeddings prepared successfully.")
             return embeddings
         except Exception as e:
-            print(f"Error preparing embeddings: {e}")
+            logger.error(f"Error preparing embeddings: {e}")
             return None
 
     @staticmethod
     def prepare_documents(docs):
         if not docs:
-            print("No documents provided for preparation.")
+            logger.info("No documents provided for preparation.")
             return None
         try:
-            print("Preparing documents...")
+            logger.info("Preparing documents...")
             text_splitter = RecursiveCharacterTextSplitter(chunk_size=200, chunk_overlap=50)
             documents = text_splitter.split_documents(docs)
-            print("Documents prepared successfully.")
+            logger.info("Documents prepared successfully.")
             return documents
         except Exception as e:
-            print(f"Error preparing documents: {e}")
+            logger.error(f"Error preparing documents: {e}")
             return None
 
     def run_query(self, query):
         if not query:
-            print("No query provided.")
+            logger.info("No query provided.")
             return "No query provided."
 
-        print(f"Running query: {query}")
+        logger.info(f"Running query: {query}")
         docs = self.load_text_file()
         if not docs:
             return "Failed to load documents."
@@ -101,11 +105,7 @@ class ChatWithVideo:
         try:
             table = db.create_table(
                 "pandas_docs",
-                data=[{
-                    "vector": embeddings.embed_query("Hello World"),
-                    "text": "Hello World",
-                    "id": "1"
-                }],
+                data=[{"vector": embeddings.embed_query("Hello World"), "text": "Hello World", "id": "1"}],
                 mode="overwrite")
             docsearch = LanceDB.from_documents(documents, embeddings, connection=table)
 
@@ -122,32 +122,19 @@ class ChatWithVideo:
             Helpful Answer:"""
 
             QA_CHAIN_PROMPT = PromptTemplate(input_variables=["context", "question"], template=template)
-            print("Prompt loaded")
+            logger.info("Prompt loaded")
             qa = RetrievalQA.from_chain_type(
                 llm,
                 chain_type='stuff',
                 retriever=docsearch.as_retriever(),
                 chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
-            print("Query processed successfully.")
+            logger.info("Query processed successfully.")
 
             result = qa.run(query)
-            print("Result of the query:", result)
+            logger.info(f"Result of the query: {result}")
             return result
         except Exception as e:
-            print(f"Error running query: {e}")
+            logger.error(f"Error running query: {e}")
             return f"Error: {e}"
 
 
-
-
-
-
-# input_file = '/content/moe_blog.text'
-# llm_model_name = 'TheBloke/Mistral-7B-v0.1-GGUF'
-# llm_model_file = 'mistral-7b-v0.1.Q4_K_M.gguf'
-# llm_model_type = "mistral"
-# embedding_model_name = 'sentence-transformers/all-MiniLM-L6-v2'
-# chat = ChatWithVideo(input_file,llm_model_name, llm_model_file, llm_model_type, embedding_model_name)
-# query = "what is mistral ?"
-# response = chat.run_query(query)
-# print(response)
