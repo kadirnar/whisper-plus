@@ -4,6 +4,6 @@ numpy
 pyannote.audio==3.1.0
 pytube==15.0.0
 Requests==2.31.0
-torch==2.1.0
-torchaudio==2.1.0
+torch
+torchaudio
 transformers==4.35.2
