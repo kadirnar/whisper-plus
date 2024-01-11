@@ -91,9 +91,9 @@ pip install -r dev-requirements
 ```
 
 ```python
-from wihsperplus.pipelines.chatbot import ChatWithVideo
+from whisperplus.pipelines.chatbot import ChatWithVideo
 
-input_file = "trascript.text"
+input_file = "trascript.txt"
 llm_model_name = "TheBloke/Mistral-7B-v0.1-GGUF"
 llm_model_file = "mistral-7b-v0.1.Q4_K_M.gguf"
 llm_model_type = "mistral"

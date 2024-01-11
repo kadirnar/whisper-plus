@@ -1,9 +1,18 @@
-gradio==4.7.1
+--index-url https://download.pytorch.org/whl/cu118
+torch==2.1.1
+torchvision==0.16.1
+torchaudio==2.1.1
+gradio==4.14.0
+lancedb==0.4.2
+langchain==0.1.0
 moviepy==1.0.3
-numpy
+numpy==1.24.1
 pyannote.audio==3.1.0
+pyannote.core==5.0.0
+pyannote.database==5.0.1
+pyannote.metrics==3.2.1
+pyannote.pipeline==3.0.1
 pytube==15.0.0
 Requests==2.31.0
-torch
-torchaudio
+setuptools==69.0.3
 transformers==4.35.2
