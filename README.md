@@ -85,11 +85,6 @@ print(dialogue)
 ```
 
 ### Chat with Video - RAG
-
-```bash
-pip install -r dev-requirements
-```
-
 ```python
 from whisperplus.pipelines.chatbot import ChatWithVideo
 
