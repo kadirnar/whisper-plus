@@ -1,7 +1,6 @@
---index-url https://download.pytorch.org/whl/cu118
-torch==2.1.1
-torchvision==0.16.1
-torchaudio==2.1.1
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
 gradio==4.14.0
 lancedb==0.4.2
 langchain==0.1.0
@@ -14,5 +13,4 @@ pyannote.metrics==3.2.1
 pyannote.pipeline==3.0.1
 pytube==15.0.0
 Requests==2.31.0
-setuptools==69.0.3
 transformers==4.35.2
