@@ -10,7 +10,6 @@ def get_requirements(req_path: str):
 
 
 INSTALL_REQUIRES = get_requirements("requirements.txt")
-DEV_REQUIREMETNS = get_requirements("dev-requirements.txt")
 
 
 def get_long_description():
@@ -51,7 +50,4 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/kadirnar/whisperplus',
     install_requires=INSTALL_REQUIRES,
-    extras_require={
-        'dev': DEV_REQUIREMETNS,
-    },
 )
