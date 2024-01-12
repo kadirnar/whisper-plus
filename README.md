@@ -85,6 +85,7 @@ print(dialogue)
 ```
 
 ### Chat with Video - RAG
+
 ```python
 from whisperplus.pipelines.chatbot import ChatWithVideo
 
