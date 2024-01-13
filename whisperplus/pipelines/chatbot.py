@@ -1,4 +1,5 @@
 import logging
+
 import lancedb
 from langchain.chains import RetrievalQA
 from langchain.document_loaders import TextLoader
@@ -11,6 +12,7 @@ from langchain.vectorstores import LanceDB
 # Configure basic logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
 
 class ChatWithVideo:
 
@@ -139,5 +141,3 @@ class ChatWithVideo:
         except Exception as e:
             logger.error(f"Error running query: {e}")
             return f"Error: {e}"
-
-
