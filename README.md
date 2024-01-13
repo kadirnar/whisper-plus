@@ -84,7 +84,13 @@ dialogue = format_speech_to_dialogue(output_text)
 print(dialogue)
 ```
 
-### Chat with Video - RAG
+## Applications
+
+### RAG - Chat with Video
+
+- user can use Whisperplus for converting audio into transcript files &  use it to create chat with video applications
+- we are using LanceDB as the default vectordb & open source llm.
+- feel free to do experiments with different prompts & llm to get better results.
 
 ```python
 from whisperplus.pipelines.chatbot import ChatWithVideo

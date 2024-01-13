@@ -46,15 +46,23 @@ class ChatWithVideo:
             return None
 
     @staticmethod
-    def setup_database():
+    def setup_database(embeddings):
         try:
             logger.info("Setting up the database...")
             db = lancedb.connect('/tmp/lancedb')
+            table = db.create_table(
+                "xxxxxxx",
+                data=[{
+                    "vector": embeddings.embed_query("Hello World"),
+                    "text": "Hellos World",
+                    "id": "1"
+                }],
+                mode="overwrite")
             logger.info("Database setup complete.")
-            return db
+            return table
         except Exception as e:
             logger.error(f"Error setting up the database: {e}")
-            return None
+            raise e  # Raising the exception for further debugging
 
     @staticmethod
     def prepare_embeddings(model_name):
@@ -100,21 +108,12 @@ class ChatWithVideo:
         if not embeddings:
             return "Failed to prepare embeddings."
 
-        db = self.setup_database()
+        db = self.setup_database(embeddings)
         if not db:
             return "Failed to setup database."
 
         try:
-            table = db.create_table(
-                "pandas_docs",
-                data=[{
-                    "vector": embeddings.embed_query("Hello World"),
-                    "text": "Hello World",
-                    "id": "1"
-                }],
-                mode="overwrite")
-            docsearch = LanceDB.from_documents(documents, embeddings, connection=table)
-
+            docsearch = LanceDB.from_documents(documents, embeddings, connection=db)
             llm = self.load_llm_model()
             if not llm:
                 return "Failed to load LLM model."
