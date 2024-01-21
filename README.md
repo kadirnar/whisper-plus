@@ -95,7 +95,7 @@ response = chat.run_query(query)
 print(response)
 ```
 
-### 🎙️ Long Text Support Summarization
+### 📰 Long Text Support Summarization
 
 ```python
 from whisperplus import LongTextSupportSummarizationPipeline
