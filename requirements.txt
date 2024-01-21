@@ -2,7 +2,6 @@ torch>=2.0.0
 torchvision>=0.15.0
 torchaudio>=2.0.0
 gradio==4.14.0
-lancedb==0.4.2
 langchain==0.1.0
 moviepy==1.0.3
 numpy==1.24.1
@@ -18,3 +17,4 @@ sentence-transformers
 ctransformers
 accelerate
 pre-commit==3.4.0
+autollm==0.1.9
