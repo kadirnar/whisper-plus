@@ -1,3 +1,4 @@
+from whisperplus.pipelines.long_text_summarization import LongTextSummarizationPipeline
 from whisperplus.pipelines.summarization import TextSummarizationPipeline
 from whisperplus.pipelines.whisper import SpeechToTextPipeline
 from whisperplus.pipelines.whisper_diarize import ASRDiarizationPipeline
