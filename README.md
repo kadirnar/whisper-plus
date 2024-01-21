@@ -33,19 +33,12 @@ To use the whisperplus library, follow the steps below for different tasks:
 ```python
 from whisperplus import SpeechToTextPipeline, download_and_convert_to_mp3
 
-# Define the URL of the YouTube video that you want to convert to text.
 url = "https://www.youtube.com/watch?v=di3rHkEZuUw"
 
-# Initialize the Speech to Text Pipeline with the specified model.
 audio_path = download_and_convert_to_mp3(url)
 pipeline = SpeechToTextPipeline(model_id="openai/whisper-large-v3")
+transcript = pipeline(audio_path, "openai/whisper-large-v3", "english")
 
-# Run the pipeline on the audio file.
-transcript = pipeline(
-    audio_path=audio_path, model_id="openai/whisper-large-v3", language="english"
-)
-
-# Print the transcript of the audio.
 print(transcript)
 ```
 
@@ -89,15 +82,14 @@ print(dialogue)
 ```python
 from whisperplus.pipelines.chatbot import ChatWithVideo
 
-input_file = "trascript.txt"
-llm_model_name = "TheBloke/Mistral-7B-v0.1-GGUF"
-llm_model_file = "mistral-7b-v0.1.Q4_K_M.gguf"
-llm_model_type = "mistral"
-embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
-
 chat = ChatWithVideo(
-    input_file, llm_model_name, llm_model_file, llm_model_type, embedding_model_name
+    input_file="trascript.txt",
+    llm_model_name="TheBloke/Mistral-7B-v0.1-GGUF",
+    llm_model_file="mistral-7b-v0.1.Q4_K_M.gguf",
+    llm_model_type="mistral",
+    embedding_model_name="sentence-transformers/all-MiniLM-L6-v2",
 )
+
 query = "what is this video about ?"
 response = chat.run_query(query)
 print(response)
