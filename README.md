@@ -95,6 +95,45 @@ response = chat.run_query(query)
 print(response)
 ```
 
+### 🌠 RAG - Chat with Video(AutoLLM)
+
+```python
+from whisperplus.pipelines.autollm_chatbot import AutoLLMChatWithVideo
+
+# service_context_params
+system_prompt = """
+You are an friendly ai assistant that help users find the most relevant and accurate answers
+to their questions based on the documents you have access to.
+When answering the questions, mostly rely on the info in documents.
+"""
+query_wrapper_prompt = """
+The document information is below.
+---------------------
+{context_str}
+---------------------
+Using the document information and mostly relying on it,
+answer the query.
+Query: {query_str}
+Answer:
+"""
+
+chat = AutoLLMChatWithVideo(
+    input_file="audio.mp3",
+    openai_key="YOUR_OPENAI_KEY",  # optional
+    huggingface_key="YOUR_HUGGINGFACE_KEY",  # optional
+    llm_model="gpt-3.5-turbo",
+    llm_max_tokens="256",
+    llm_temperature="0.1",
+    system_prompt=system_prompt,
+    query_wrapper_prompt=query_wrapper_prompt,
+    embed_model="huggingface/BAAI/bge-large-zh",  # "text-embedding-ada-002"
+)
+
+query = "what is this video about ?"
+response = chat.run_query(query)
+print(response)
+```
+
 ### 📰 Long Text Support Summarization
 
 ```python
@@ -125,10 +164,6 @@ pre-commit run --all-files
 ## 📜 License
 
 This project is licensed under the terms of the Apache License 2.0.
-
-## 🤗 Acknowledgments
-
-This project is based on the [HuggingFace Transformers](https://github.com/huggingface/transformers) library.
 
 ## 🤗 Citation
 
