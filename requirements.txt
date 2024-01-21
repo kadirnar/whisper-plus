@@ -18,3 +18,4 @@ sentence-transformers
 ctransformers
 accelerate
 pre-commit==3.4.0
+autollm==0.1.9
