@@ -52,7 +52,7 @@ print(transcript)
 ### 📰 Summarization
 
 ```python
-from whisperplus.pipelines.summarization import TextSummarizationPipeline
+from whisperplus import TextSummarizationPipeline
 
 summarizer = TextSummarizationPipeline(model_id="facebook/bart-large-cnn")
 summary = summarizer.summarize(transcript)
@@ -106,9 +106,7 @@ print(response)
 ### 🎙️ Long Text Support Summarization
 
 ```python
-from whisperplus.pipelines.long_text_support_summarization import (
-    LongTextSupportSummarizationPipeline,
-)
+from whisperplus import LongTextSupportSummarizationPipeline
 
 summarizer = LongTextSupportSummarizationPipeline(model_id="facebook/bart-large-cnn")
 summary_text = summarizer.summarize(transcript)
@@ -118,7 +116,7 @@ print(summary_text)
 ### 🎙️ Speech to Text
 
 ```python
-from whisperplus.pipelines.text2speech import TextToSpeechPipeline
+from whisperplus import TextToSpeechPipeline
 
 tts = TextToSpeechPipeline(model_id="suno/bark")
 audio = tts(text="Hello World", voice_preset="v2/en_speaker_6")
