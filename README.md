@@ -1,6 +1,6 @@
 <div align="center">
 <h2>
-    WhisperPlus: Advancing Speech-to-Text Processing 🚀
+    WhisperPlus: Advancing Speech2Text and Text2Speech Processing 🚀
 </h2>
 <div>
     <img width="500" alt="teaser" src="doc\openai-whisper.jpg">
@@ -22,7 +22,7 @@ pip install whisperplus
 
 ## 🤗 Model Hub
 
-You can find the models on the [HuggingFace Spaces](https://huggingface.co/spaces/ArtGAN/WhisperPlus) or on the [HuggingFace Model Hub](https://huggingface.co/models?search=whisper)
+You can find the models on the [HuggingFace Model Hub](https://huggingface.co/models?search=whisper)
 
 ## 🎙️ Usage
 
@@ -49,7 +49,7 @@ transcript = pipeline(
 print(transcript)
 ```
 
-### Summarization
+### 📰 Summarization
 
 ```python
 from whisperplus.pipelines.summarization import TextSummarizationPipeline
@@ -59,7 +59,7 @@ summary = summarizer.summarize(transcript)
 print(summary[0]["summary_text"])
 ```
 
-### Speaker Diarization
+### 💬 Speaker Diarization
 
 ```python
 from whisperplus import (
@@ -84,13 +84,7 @@ dialogue = format_speech_to_dialogue(output_text)
 print(dialogue)
 ```
 
-### Applications
-
-#### RAG - Chat with Video
-
-- user can use Whisperplus for converting audio into transcript files &  use it to create chat with video applications
-- we are using LanceDB as the default vectordb & open source llm.
-- feel free to do experiments with different prompts & llm to get better results.
+### ⭐ RAG - Chat with Video(LanceDB)
 
 ```python
 from whisperplus.pipelines.chatbot import ChatWithVideo
@@ -111,11 +105,6 @@ print(response)
 
 ### 🎙️ Long Text Support Summarization
 
-If the transcript is longer than the specified maximum sequence length, the summarizer will split the transcript
-into chunks and summarize each chunk individually. The chunks are then concatenated to form the final summary.
-
-The improved summarization pipeline shows below how to use the summarizer with a long length text:
-
 ```python
 from whisperplus.pipelines.long_text_support_summarization import (
     LongTextSupportSummarizationPipeline,
@@ -135,7 +124,7 @@ tts = TextToSpeechPipeline(model_id="suno/bark")
 audio = tts(text="Hello World", voice_preset="v2/en_speaker_6")
 ```
 
-## Contributing
+## 😍 Contributing
 
 ```bash
 pip install -r dev-requirements.txt
