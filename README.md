@@ -126,6 +126,15 @@ summary_text = summarizer.summarize(transcript)
 print(summary_text)
 ```
 
+### 🎙️ Speech to Text
+
+```python
+from whisperplus.pipelines.text2speech import TextToSpeechPipeline
+
+tts = TextToSpeechPipeline(model_id="suno/bark")
+audio = tts(text="Hello World", voice_preset="v2/en_speaker_6")
+```
+
 ## Contributing
 
 ```bash

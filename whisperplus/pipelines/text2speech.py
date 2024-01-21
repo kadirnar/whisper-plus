@@ -11,6 +11,7 @@ class TextToSpeechPipeline:
     """Class to convert text to speech."""
 
     def __init__(self, model_id: str = "suno/bark"):
+        self.model_id = model_id
         self.model = None
         self.device = None
 
@@ -39,9 +40,9 @@ class TextToSpeechPipeline:
         logging.info("Model loaded 🎉")
         self.model = model
 
-    def __call__(self, text: str, model_id: str = "suno/bark", voice_preset: str = "v2/en_speaker_6"):
+    def __call__(self, text: str, voice_preset: str = "v2/en_speaker_6"):
         processor = AutoProcessor.from_pretrained(
-            model_id, torch_dtype=torch.float16, use_flash_attention_2=True, device=self.device)
+            self.model_id, torch_dtype=torch.float16, use_flash_attention_2=True, device=self.device)
         inputs = processor(text, voice_preset)
         outputs = self.model.generate(**inputs)  # type: ignore
 
@@ -49,4 +50,6 @@ class TextToSpeechPipeline:
 
         sample_rate = self.model.generation_config.sample_rate
         write_wav("bark_generation.wav", sample_rate, audio_array)
-        print("Generation is done 😎")
+        logging.info("bark_generation.wav saved 🎉")
+
+        return audio_array
