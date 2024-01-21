@@ -25,6 +25,8 @@ class AutoLLMChatWithVideo:
         embed_model: Optional[str] = "huggingface/BAAI/bge-large-zh",
     ):
 
+        self.model = None
+
         if self.model is None:
             self.load_model(
                 input_file=input_file,
@@ -83,10 +85,10 @@ class AutoLLMChatWithVideo:
             embed_model=embed_model,
         )
 
-        self.query_engine = query_engine
+        self.model = query_engine
 
     def __call__(self, query):
-        response = self.query_engine.query(query)
+        response = self.model.query(query)
         output = response.response
 
         logging.info(f"Query: {query}")

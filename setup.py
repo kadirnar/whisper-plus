@@ -50,4 +50,5 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/kadirnar/whisperplus',
     install_requires=INSTALL_REQUIRES,
+    packages=setuptools.find_packages(),
 )
