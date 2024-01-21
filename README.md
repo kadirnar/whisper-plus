@@ -20,7 +20,7 @@
 pip install whisperplus
 ```
 
-# 🤗 Model Hub
+## 🤗 Model Hub
 
 You can find the models on the [HuggingFace Spaces](https://huggingface.co/spaces/ArtGAN/WhisperPlus) or on the [HuggingFace Model Hub](https://huggingface.co/models?search=whisper)
 
@@ -84,9 +84,9 @@ dialogue = format_speech_to_dialogue(output_text)
 print(dialogue)
 ```
 
-## Applications
+### Applications
 
-### RAG - Chat with Video
+#### RAG - Chat with Video
 
 - user can use Whisperplus for converting audio into transcript files &  use it to create chat with video applications
 - we are using LanceDB as the default vectordb & open source llm.
@@ -109,7 +109,24 @@ response = chat.run_query(query)
 print(response)
 ```
 
-### Contributing
+### 🎙️ Long Text Support Summarization
+
+If the transcript is longer than the specified maximum sequence length, the summarizer will split the transcript
+into chunks and summarize each chunk individually. The chunks are then concatenated to form the final summary.
+
+The improved summarization pipeline shows below how to use the summarizer with a long length text:
+
+```python
+from whisperplus.pipelines.long_text_support_summarization import (
+    LongTextSupportSummarizationPipeline,
+)
+
+summarizer = LongTextSupportSummarizationPipeline(model_id="facebook/bart-large-cnn")
+summary_text = summarizer.summarize(transcript)
+print(summary_text)
+```
+
+## Contributing
 
 ```bash
 pip install -r dev-requirements.txt
