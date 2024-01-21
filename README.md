@@ -52,6 +52,16 @@ summary = summarizer.summarize(transcript)
 print(summary[0]["summary_text"])
 ```
 
+### 📰 Long Text Support Summarization
+
+```python
+from whisperplus import LongTextSummarizationPipeline
+
+summarizer = LongTextSummarizationPipeline(model_id="facebook/bart-large-cnn")
+summary_text = summarizer.summarize(transcript)
+print(summary_text)
+```
+
 ### 💬 Speaker Diarization
 
 ```python
@@ -132,16 +142,6 @@ chat = AutoLLMChatWithVideo(
 query = "what is this video about ?"
 response = chat.run_query(query)
 print(response)
-```
-
-### 📰 Long Text Support Summarization
-
-```python
-from whisperplus import LongTextSupportSummarizationPipeline
-
-summarizer = LongTextSupportSummarizationPipeline(model_id="facebook/bart-large-cnn")
-summary_text = summarizer.summarize(transcript)
-print(summary_text)
 ```
 
 ### 🎙️ Speech to Text
