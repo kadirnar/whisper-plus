@@ -108,7 +108,7 @@ print(response)
 ### 🌠 RAG - Chat with Video(AutoLLM)
 
 ```python
-from whisperplus.pipelines.autollm_chatbot import AutoLLMChatWithVideo
+from whisperplus import AutoLLMChatWithVideo
 
 # service_context_params
 system_prompt = """

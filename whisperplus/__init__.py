@@ -1,3 +1,4 @@
+from whisperplus.pipelines.autollm_chatbot import AutoLLMChatWithVideo
 from whisperplus.pipelines.long_text_summarization import LongTextSummarizationPipeline
 from whisperplus.pipelines.summarization import TextSummarizationPipeline
 from whisperplus.pipelines.text2speech import TextToSpeechPipeline
