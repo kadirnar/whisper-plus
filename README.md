@@ -128,7 +128,7 @@ Answer:
 """
 
 chat = AutoLLMChatWithVideo(
-    input_file="audio.mp3",
+    input_file="input_dir", # path of mp3 file
     openai_key="YOUR_OPENAI_KEY",  # optional
     huggingface_key="YOUR_HUGGINGFACE_KEY",  # optional
     llm_model="gpt-3.5-turbo",
