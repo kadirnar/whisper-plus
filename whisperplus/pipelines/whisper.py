@@ -71,5 +71,5 @@ class SpeechToTextPipeline:
             generate_kwargs={"language": language},
         )
         logging.info("Transcribing audio...")
-        result = pipe(audio_path)["text"]
+        result = pipe(audio_path)
         return result
