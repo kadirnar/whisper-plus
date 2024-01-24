@@ -128,7 +128,7 @@ Answer:
 """
 
 chat = AutoLLMChatWithVideo(
-    input_file="input_dir", # path of mp3 file
+    input_file="input_dir",  # path of mp3 file
     openai_key="YOUR_OPENAI_KEY",  # optional
     huggingface_key="YOUR_HUGGINGFACE_KEY",  # optional
     llm_model="gpt-3.5-turbo",
@@ -153,13 +153,24 @@ tts = TextToSpeechPipeline(model_id="suno/bark")
 audio = tts(text="Hello World", voice_preset="v2/en_speaker_6")
 ```
 
+### 📹 AutoCaption
+
+```python
+from whisperplus import WhisperAutoCaptionPipeline
+
+caption = WhisperAutoCaptionPipeline(model_id="openai/whisper-large-v3")
+caption(video_path="test.mp4", output_path="output.mp4", language="turkish")
+```
+
+````python
+
 ## 😍 Contributing
 
 ```bash
 pip install -r dev-requirements.txt
 pre-commit install
 pre-commit run --all-files
-```
+````
 
 ## 📜 License
 
