@@ -1,13 +1,16 @@
 import logging
 import tempfile
-import torch
+
 import ffmpeg
-from moviepy.editor import VideoFileClip, TextClip, CompositeVideoClip
+import torch
+from moviepy.editor import CompositeVideoClip, TextClip, VideoFileClip
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+
 class WhisperAutoCaptionPipeline:
+
     def __init__(self, model_id: str = "openai/whisper-large-v3"):
         self.model = None
         self.device = None
@@ -54,7 +57,8 @@ class WhisperAutoCaptionPipeline:
 
             # Altyazının genişliğini ve konumunu ayarla
             txt_clip = TextClip(text, fontsize=24, color='white', bg_color='black', size=(max_width, None))
-            txt_clip = txt_clip.set_position(('center', 'bottom')).set_start(start_time).set_duration(end_time - start_time)
+            txt_clip = txt_clip.set_position(
+                ('center', 'bottom')).set_start(start_time).set_duration(end_time - start_time)
             subtitles_clips.append(txt_clip)
 
         final_video = CompositeVideoClip([video, *subtitles_clips])
