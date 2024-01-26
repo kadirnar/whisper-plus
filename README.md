@@ -1,6 +1,6 @@
 <div align="center">
 <h2>
-    WhisperPlus: Advancing Speech2Text and Text2Speech Processing 🚀
+    WhisperPlus: Advancing Speech2Text and Text2Speech Feature 🚀
 </h2>
 <div>
     <img width="500" alt="teaser" src="doc\openai-whisper.jpg">
