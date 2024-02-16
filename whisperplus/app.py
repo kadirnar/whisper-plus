@@ -56,6 +56,36 @@ def speaker_diarization(url, model_id, device, num_speakers, min_speaker, max_sp
     dialogue = format_speech_to_dialogue(output_text)
     return dialogue, audio_path
 
+def speaker_diarization_from_path(path):
+    """
+    Main function that downloads and converts a video to MP3 format, performs speech-to-text conversion using
+    a specified model, and returns the transcript along with the video path.
+
+    Args:
+        url (str): The URL of the video to download and convert.
+        model_id (str): The ID of the speech-to-text model to use.
+        language_choice (str): The language choice for the speech-to-text conversion.
+
+    Returns:
+        transcript (str): The transcript of the speech-to-text conversion.
+        video_path (str): The path of the downloaded video.
+    """
+
+    pipeline = ASRDiarizationPipeline.from_pretrained(
+        asr_model=model_id,
+        diarizer_model="pyannote/speaker-diarization-3.1",
+        use_auth_token=False,
+        chunk_length_s=30,
+        device=device,
+    )
+    pipeline.to(torch.device("cuda"))
+    waveform, sample_rate = torchaudio.load(path)
+
+    with ProgressHook() as hook:
+      output_text = pipeline({"waveform": waveform, "sample_rate": sample_rate}, hook=hook)
+    return output_text
+
+
 
 def youtube_url_to_text_app():
     with gr.Blocks():
