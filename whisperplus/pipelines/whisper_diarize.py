@@ -43,6 +43,21 @@ class ASRDiarizationPipeline:
         diarization_pipeline = Pipeline.from_pretrained(diarizer_model, use_auth_token=use_auth_token)
         return cls(asr_pipeline, diarization_pipeline)
 
+    def load_audio(self, audio_path: str):
+        waveform, sample_rate = torchaudio.load(audio_path)
+
+        # If the sample rate is different than the model's expected sample rate,
+        # resample it.
+        if sample_rate != self.sampling_rate:
+            transformation = torchaudio.transforms.Resample(orig_freq=sample_rate, new_freq=self.sampling_rate)
+            waveform = transformation(waveform)
+        
+        # Ensure the waveform is monaural (single channel) if it's not already
+        if waveform.size(0) > 1:
+            waveform = torchaudio.transforms.DownmixMono()(waveform)
+
+        return waveform.to(self.device), self.sampling_rate
+
     def __call__(
         self,
         inputs: Union[np.ndarray, List[np.ndarray]],
