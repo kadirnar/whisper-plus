@@ -4,7 +4,7 @@ import subprocess
 def run_command(command):
     """
     Executes a given command using the subprocess module.
-    
+
     Args:
         command (str): The command to be executed.
     """
@@ -12,9 +12,7 @@ def run_command(command):
 
 
 def main():
-    """
-    Main function to package and upload a Python package using setup.py and twine.
-    """
+    """Main function to package and upload a Python package using setup.py and twine."""
     sdist_command = "python setup.py sdist"
     twine_command = "twine upload dist/*"
 
