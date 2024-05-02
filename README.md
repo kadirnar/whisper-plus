@@ -18,6 +18,7 @@
 
 ```bash
 pip install whisperplus
+pip install flash-attn --no-build-isolation
 ```
 
 ## 🤗 Model Hub
