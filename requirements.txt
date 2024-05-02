@@ -19,3 +19,5 @@ accelerate
 pre-commit==3.4.0
 autollm==0.1.9
 speechbrain==0.5.16
+bitsandbytes
+flash-attn --no-build-isolation
