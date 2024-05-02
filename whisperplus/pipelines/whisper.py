@@ -1,7 +1,7 @@
 import logging
 
 import torch
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline, BitsAndBytesConfig
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, BitsAndBytesConfig, pipeline
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -26,7 +26,7 @@ class SpeechToTextPipeline:
             model_id (str): Identifier of the pre-trained model to be loaded.
         """
         logging.info("Loading model...")
-        
+
         bnb_config = BitsAndBytesConfig(
             load_in_4bit=True,
             bnb_4bit_quant_type="nf4",
@@ -40,7 +40,7 @@ class SpeechToTextPipeline:
             use_safetensors=True,
             attn_implementation="flash_attention_2",
             device_map="auto")
-        
+
         logging.info("Model loaded successfully.")
 
         processor = AutoProcessor.from_pretrained(model_id)
