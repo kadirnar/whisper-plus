@@ -48,7 +48,14 @@ class SpeechToTextPipeline:
         self.processor = processor
         self.model = model
 
-    def __call__(self, audio_path: str, language: str = "turkish"):
+    def __call__(
+            self,
+            chunk_length_s: int = 30,
+            stride_length_s: int = 5,
+            audio_path: str = "test.mp3",
+            max_new_tokens: int = 128,
+            batch_size: int = 100,
+            language: str = "turkish"):
         """
         Converts audio to text using the pre-trained speech recognition model.
 
@@ -61,9 +68,9 @@ class SpeechToTextPipeline:
         pipe = pipeline(
             "automatic-speech-recognition",
             model=self.model,
-            chunk_length_s=30,
-            stride_length_s=5,
-            max_new_tokens=128,
+            chunk_length_s=chunk_length_s,
+            stride_length_s=stride_length_s,
+            max_new_tokens=max_new_tokens,
             batch_size=100,
             device_map="auto",
             return_timestamps=True,
