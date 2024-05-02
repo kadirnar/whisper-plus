@@ -12,7 +12,7 @@ pyannote.metrics==3.2.1
 pyannote.pipeline==3.0.1
 pytube==15.0.0
 Requests==2.31.0
-transformers==4.35.2
+transformers
 sentence-transformers
 ctransformers
 accelerate
