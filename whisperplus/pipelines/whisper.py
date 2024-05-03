@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 class SpeechToTextPipeline:
     """Class for converting audio to text using a pre-trained speech recognition model."""
 
-    def __init__(self, model_id: str = "openai/whisper-large-v3"):
+    def __init__(self, model_id: str = "openai/whisper-large-v3", quant_config=None):
         self.model = None
         self.device = None
 
@@ -31,8 +31,7 @@ class SpeechToTextPipeline:
             low_cpu_mem_usage=True,
             use_safetensors=True,
             attn_implementation="flash_attention_2",
-            device_map="auto")
-
+        )
         logging.info("Model loaded successfully.")
 
         processor = AutoProcessor.from_pretrained(model_id)
@@ -47,7 +46,9 @@ class SpeechToTextPipeline:
             audio_path: str = "test.mp3",
             max_new_tokens: int = 128,
             batch_size: int = 100,
-            language: str = "turkish"):
+            language: str = "turkish",
+            return_timestamps: bool = False
+        ):
         """
         Converts audio to text using the pre-trained speech recognition model.
 
@@ -57,15 +58,15 @@ class SpeechToTextPipeline:
         Returns:
             str: Transcribed text from the audio.
         """
+
         pipe = pipeline(
             "automatic-speech-recognition",
             model=self.model,
             chunk_length_s=chunk_length_s,
             stride_length_s=stride_length_s,
             max_new_tokens=max_new_tokens,
-            batch_size=100,
-            device_map="auto",
-            return_timestamps=True,
+            batch_size=batch_size,
+            return_timestamps=return_timestamps,
             tokenizer=self.processor.tokenizer,
             feature_extractor=self.processor.feature_extractor,
             model_kwargs={"use_flash_attention_2": True},
