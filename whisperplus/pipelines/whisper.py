@@ -1,7 +1,6 @@
 import logging
 
-import torch
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, BitsAndBytesConfig, pipeline
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -18,7 +17,7 @@ class SpeechToTextPipeline:
         else:
             logging.info("Model already loaded.")
 
-    def load_model(self, model_id: str = "openai/whisper-large-v3"):
+    def load_model(self, model_id: str = "openai/whisper-large-v3", quant_config=None):
         """
         Loads the pre-trained speech recognition model and moves it to the specified device.
 
@@ -26,16 +25,9 @@ class SpeechToTextPipeline:
             model_id (str): Identifier of the pre-trained model to be loaded.
         """
         logging.info("Loading model...")
-
-        bnb_config = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_quant_type="nf4",
-            bnb_4bit_compute_dtype=torch.bfloat16,
-            bnb_4bit_use_double_quant=True,
-        )
         model = AutoModelForSpeechSeq2Seq.from_pretrained(
             model_id,
-            quantization_config=bnb_config,
+            quantization_config=quant_config,
             low_cpu_mem_usage=True,
             use_safetensors=True,
             attn_implementation="flash_attention_2",
