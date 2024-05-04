@@ -41,4 +41,5 @@ end_event.record()
 
 torch.cuda.synchronize()
 elapsed_time_ms = start_event.elapsed_time(end_event)
-print(f"Execution time: {elapsed_time_ms/1000}s")
+seconds = elapsed_time_ms / 1000
+print(f"Elapsed time: {seconds} seconds")
