@@ -39,10 +39,14 @@ from transformers import BitsAndBytesConfig, HqqConfig
 url = "https://www.youtube.com/watch?v=di3rHkEZuUw"
 audio_path = download_and_convert_to_mp3(url)
 
-quant_config = HqqConfig(
-    nbits=1, group_size=64, quant_zero=False, quant_scale=False, axis=0
+hqq_config = HqqConfig(
+    nbits=1,
+    group_size=64,
+    quant_zero=False,
+    quant_scale=False,
+    axis=0,
+    offload_meta=False,
 )  # axis=0 is used by default
-
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -52,11 +56,11 @@ bnb_config = BitsAndBytesConfig(
 )
 
 pipeline = SpeechToTextPipeline(
-    model_id="distil-whisper/distil-large-v3", quant_config=quant_config
+    model_id="distil-whisper/distil-large-v3", quant_config=hqq_config
 )  # or bnb_config
 
 transcript = pipeline(
-    audio_path="test.mp3",
+    audio_path=audio_path,
     chunk_length_s=30,
     stride_length_s=5,
     max_new_tokens=128,
