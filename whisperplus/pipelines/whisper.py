@@ -1,7 +1,12 @@
 import logging
 
 import torch
+from hqq.core.quantize import HQQBackend, HQQLinear
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+
+HQQLinear.set_backend(HQQBackend.PYTORCH)  # Pytorch backend
+HQQLinear.set_backend(HQQBackend.PYTORCH_COMPILE)  # Compiled Pytorch via dynamo
+HQQLinear.set_backend(HQQBackend.ATEN)  # C++ Aten/CUDA backend (set automatically by default if available)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -25,7 +30,7 @@ class SpeechToTextPipeline:
             low_cpu_mem_usage=True,
             use_safetensors=True,
             attn_implementation="flash_attention_2",
-            torch_dtype=torch.float16,
+            torch_dtype=torch.bfloat16,
             device_map='auto',
             max_memory={0: "24GiB"})
         logging.info("Model loaded successfully.")
