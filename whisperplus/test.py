@@ -9,7 +9,7 @@ url = "https://www.youtube.com/watch?v=di3rHkEZuUw"
 audio_path = download_and_convert_to_mp3(url)
 
 hqq_config = HqqConfig(
-    nbits=1, group_size=64, quant_zero=False, quant_scale=False, axis=0)  #axis=0 is used by default
+    nbits=1, group_size=64, quant_zero=False, quant_scale=False, axis=0)  # axis=0 is used by default
 
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
