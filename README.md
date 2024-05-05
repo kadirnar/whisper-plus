@@ -34,7 +34,7 @@ To use the whisperplus library, follow the steps below for different tasks:
 ```python
 from whisperplus import SpeechToTextPipeline, download_and_convert_to_mp3
 from transformers import BitsAndBytesConfig, HqqConfig
-
+import torch
 
 url = "https://www.youtube.com/watch?v=di3rHkEZuUw"
 audio_path = download_and_convert_to_mp3(url)
