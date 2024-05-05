@@ -1,12 +1,8 @@
 import logging
+from typing import Optional
 
 import torch
-from hqq.core.quantize import HQQBackend, HQQLinear
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
-
-HQQLinear.set_backend(HQQBackend.PYTORCH)  # Pytorch backend
-HQQLinear.set_backend(HQQBackend.PYTORCH_COMPILE)  # Compiled Pytorch via dynamo
-HQQLinear.set_backend(HQQBackend.ATEN)  # C++ Aten/CUDA backend (set automatically by default if available)
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -14,9 +10,16 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 class SpeechToTextPipeline:
     """Class for converting audio to text using a pre-trained speech recognition model."""
 
-    def __init__(self, model_id: str = "distil-whisper/distil-large-v3", quant_config=None):
+    def __init__(
+            self,
+            model_id: str = "distil-whisper/distil-large-v3",
+            quant_config=None,
+            hqq: Optional[bool] = True,
+            flash_attention_2: Optional[bool] = True):
         self.model = None
         self.device = None
+        self.hqq = hqq
+        self.flash_attention_2 = flash_attention_2
 
         if self.model is None:
             self.load_model(model_id)
@@ -24,15 +27,27 @@ class SpeechToTextPipeline:
             logging.info("Model already loaded.")
 
     def load_model(self, model_id: str = "distil-whisper/distil-large-v3", quant_config=None):
+        if self.hqq:
+            from hqq.core.quantize import HQQBackend, HQQLinear
+            HQQLinear.set_backend(HQQBackend.PYTORCH)  # Pytorch backend
+            HQQLinear.set_backend(HQQBackend.PYTORCH_COMPILE)  # Compiled Pytorch via dynamo
+            HQQLinear.set_backend(
+                HQQBackend.ATEN)  # C++ Aten/CUDA backend (set automatically by default if available)
+
+        if self.flash_attention_2:
+            attn_implementation = "flash_attention_2"
+        else:
+            attn_implementation = "sdpa"
+
         model = AutoModelForSpeechSeq2Seq.from_pretrained(
             model_id,
             quantization_config=quant_config,
             low_cpu_mem_usage=True,
             use_safetensors=True,
-            attn_implementation="flash_attention_2",
+            attn_implementation=attn_implementation,
             torch_dtype=torch.bfloat16,
             device_map='auto',
-            max_memory={0: "24GiB"})
+        )
         logging.info("Model loaded successfully.")
 
         processor = AutoProcessor.from_pretrained(model_id)
@@ -69,7 +84,7 @@ class SpeechToTextPipeline:
             return_timestamps=return_timestamps,
             tokenizer=self.processor.tokenizer,
             feature_extractor=self.processor.feature_extractor,
-            model_kwargs={"use_flash_attention_2": True},
+            model_kwargs={"use_flash_attention_2": self.flash_attention_2},
             generate_kwargs={"language": language},
         )
         logging.info("Transcribing audio...")

@@ -1,6 +1,6 @@
 <div align="center">
 <h2>
-    WhisperPlus: Advancing Speech2Text and Text2Speech Feature 🚀
+    WhisperPlus: Faster, Smarter, and More Capable 🚀
 </h2>
 <div>
     <img width="500" alt="teaser" src="doc\openai-whisper.jpg">
@@ -56,8 +56,11 @@ bnb_config = BitsAndBytesConfig(
 )
 
 pipeline = SpeechToTextPipeline(
-    model_id="distil-whisper/distil-large-v3", quant_config=hqq_config
-)  # or bnb_config
+    model_id="distil-whisper/distil-large-v3",
+    quant_config=hqq_config,
+    hqq=True,
+    flash_attention_2=True,
+)
 
 transcript = pipeline(
     audio_path=audio_path,
