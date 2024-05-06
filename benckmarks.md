@@ -6,7 +6,6 @@ This evaluation was performed on the Mozilla-Foundation/Common-Voice-17-0 datase
 | distil-whisper/distil-large-v3       | 120.48       |
 | distil-whisper/distil-large-v3 + Bnb | 120.14       |
 
-
 Bnb: https://github.com/TimDettmers/bitsandbytes
 
 Dataset: https://huggingface.co/datasets/mozilla-foundation/common_voice_17_0
