@@ -17,7 +17,7 @@
 ## 🛠️ Installation
 
 ```bash
-pip install whisperplus git+https://github.com/huggingface/transformers
+pip install git+https://github.com/huggingface/transformers
 pip install flash-attn --no-build-isolation
 ```
 
@@ -32,15 +32,15 @@ To use the whisperplus library, follow the steps below for different tasks:
 ### 🎵 Youtube URL to Audio
 
 ```python
-from whisperplus import SpeechToTextPipeline, download_and_convert_to_mp3
+from whisperplus import SpeechToTextPipeline, download_youtube_to_mp3
 from transformers import BitsAndBytesConfig, HqqConfig
 import torch
 
 url = "https://www.youtube.com/watch?v=di3rHkEZuUw"
-audio_path = download_and_convert_to_mp3(url)
+audio_path = download_youtube_to_mp3(url, output_dir="downloads", filename="test")
 
 hqq_config = HqqConfig(
-    nbits=1,
+    nbits=4,
     group_size=64,
     quant_zero=False,
     quant_scale=False,
@@ -78,7 +78,7 @@ print(transcript)
 ### 📰 Summarization
 
 ```python
-from whisperplus import TextSummarizationPipeline
+from whisperplus.pipelines.summarization import TextSummarizationPipeline
 
 summarizer = TextSummarizationPipeline(model_id="facebook/bart-large-cnn")
 summary = summarizer.summarize(transcript)
@@ -88,7 +88,7 @@ print(summary[0]["summary_text"])
 ### 📰 Long Text Support Summarization
 
 ```python
-from whisperplus import LongTextSummarizationPipeline
+from whisperplus.pipelines.long_text_summarization import LongTextSummarizationPipeline
 
 summarizer = LongTextSummarizationPipeline(model_id="facebook/bart-large-cnn")
 summary_text = summarizer.summarize(transcript)
@@ -102,13 +102,10 @@ pip install pyannote.audio>=3.1.0 pyannote.core>=5.0.0 pyannote.database>=5.0.1 
 ```
 
 ```python
-from whisperplus import (
-    ASRDiarizationPipeline,
-    download_and_convert_to_mp3,
-    format_speech_to_dialogue,
-)
+from whisperplus.pipelines.whisper_diarize import ASRDiarizationPipeline
+from whisperplus import download_youtube_to_mp3, format_speech_to_dialogue
 
-audio_path = download_and_convert_to_mp3("https://www.youtube.com/watch?v=mRB14sFHw2E")
+audio_path = download_youtube_to_mp3("https://www.youtube.com/watch?v=mRB14sFHw2E")
 
 device = "cuda"  # cpu or mps
 pipeline = ASRDiarizationPipeline.from_pretrained(
@@ -153,7 +150,7 @@ pip install autollm>=0.1.9
 ```
 
 ```python
-from whisperplus import AutoLLMChatWithVideo
+from whisperplus.pipelines.autollm_chatbot import AutoLLMChatWithVideo
 
 # service_context_params
 system_prompt = """
@@ -192,7 +189,7 @@ print(response)
 ### 🎙️ Speech to Text
 
 ```python
-from whisperplus import TextToSpeechPipeline
+from whisperplus.pipelines.text2speech import TextToSpeechPipeline
 
 tts = TextToSpeechPipeline(model_id="suno/bark")
 audio = tts(text="Hello World", voice_preset="v2/en_speaker_6")
@@ -200,11 +197,24 @@ audio = tts(text="Hello World", voice_preset="v2/en_speaker_6")
 
 ### 🎥 AutoCaption
 
+```bash
+pip install moviepy
+apt install imagemagick libmagick++-dev
+cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g'> /etc/ImageMagick-6/policy.xml
+```
+
 ```python
-from whisperplus import WhisperAutoCaptionPipeline
+from whisperplus.pipelines.whisper_autocaption import WhisperAutoCaptionPipeline
+from whisperplus import download_youtube_to_mp4
+
+video_path = download_youtube_to_mp4(
+    "https://www.youtube.com/watch?v=di3rHkEZuUw",
+    output_dir="downloads",
+    filename="test",
+)  # Optional
 
 caption = WhisperAutoCaptionPipeline(model_id="openai/whisper-large-v3")
-caption(video_path="test.mp4", output_path="output.mp4", language="turkish")
+caption(video_path=video_path, output_path="output.mp4", language="english")
 ```
 
 ## 😍 Contributing

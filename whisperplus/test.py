@@ -2,10 +2,10 @@ import torch
 from hqq.utils.patching import prepare_for_inference
 from pipelines.whisper import SpeechToTextPipeline
 from transformers import BitsAndBytesConfig, HqqConfig
-from utils.download_utils import download_and_convert_to_mp3
+from utils.download_utils import download_youtube_to_mp3
 
 url = "https://www.youtube.com/watch?v=BpN4hEAvDBg"
-audio_path = download_and_convert_to_mp3(url)
+audio_path = download_youtube_to_mp3(url)
 
 hqq_config = HqqConfig(
     nbits=1,

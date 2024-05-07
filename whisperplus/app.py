@@ -2,7 +2,7 @@ import gradio as gr
 
 from whisperplus.pipelines.whisper import SpeechToTextPipeline
 from whisperplus.pipelines.whisper_diarize import ASRDiarizationPipeline
-from whisperplus.utils.download_utils import download_and_convert_to_mp3
+from whisperplus.utils.download_utils import download_youtube_to_mp3
 from whisperplus.utils.text_utils import format_speech_to_dialogue
 
 
@@ -20,7 +20,7 @@ def youtube_url_to_text(url, model_id, language_choice):
         transcript (str): The transcript of the speech-to-text conversion.
         video_path (str): The path of the downloaded video.
     """
-    video_path = download_and_convert_to_mp3(url)
+    video_path = download_youtube_to_mp3(url)
     pipeline = SpeechToTextPipeline(model_id)
     transcript = pipeline(audio_path=video_path, model_id=model_id, language=language_choice)
 
@@ -50,7 +50,7 @@ def speaker_diarization(url, model_id, device, num_speakers, min_speaker, max_sp
         device=device,
     )
 
-    audio_path = download_and_convert_to_mp3(url)
+    audio_path = download_youtube_to_mp3(url)
     output_text = pipeline(
         audio_path, num_speakers=num_speakers, min_speaker=min_speaker, max_speaker=max_speaker)
     dialogue = format_speech_to_dialogue(output_text)
