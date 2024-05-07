@@ -6,3 +6,5 @@ Requests>=2.31.0
 accelerate
 bitsandbytes
 hqq
+ffmpeg
+ffmpeg-python

@@ -197,11 +197,24 @@ audio = tts(text="Hello World", voice_preset="v2/en_speaker_6")
 
 ### 🎥 AutoCaption
 
+```bash
+pip install moviepy
+apt install imagemagick libmagick++-dev
+cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g'> /etc/ImageMagick-6/policy.xml
+```
+
 ```python
 from whisperplus.pipelines.whisper_autocaption import WhisperAutoCaptionPipeline
+from whisperplus import download_youtube_to_mp4
+
+video_path = download_youtube_to_mp4(
+    "https://www.youtube.com/watch?v=di3rHkEZuUw",
+    output_dir="downloads",
+    filename="test",
+)  # Optional
 
 caption = WhisperAutoCaptionPipeline(model_id="openai/whisper-large-v3")
-caption(video_path="test.mp4", output_path="output.mp4", language="turkish")
+caption(video_path=video_path, output_path="output.mp4", language="english")
 ```
 
 ## 😍 Contributing
