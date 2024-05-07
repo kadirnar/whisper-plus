@@ -8,3 +8,4 @@ bitsandbytes
 hqq
 ffmpeg
 ffmpeg-python
+pre-commit
