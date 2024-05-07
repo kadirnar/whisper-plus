@@ -193,7 +193,7 @@ response = chat.run_query(query)
 print(response)
 ```
 
-### 🎙️ Speech to Text
+### 🎙️ Text to Speech
 
 ```python
 from whisperplus.pipelines.text2speech import TextToSpeechPipeline
