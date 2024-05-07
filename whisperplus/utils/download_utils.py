@@ -1,42 +1,51 @@
 import logging
-import os
 from pathlib import Path
-from typing import Optional
 
-from moviepy.editor import AudioFileClip
-from pytube import YouTube
+import yt_dlp
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 
 
-def download_and_convert_to_mp3(url: str,
-                                output_path: str = "output",
-                                filename: str = "test") -> Optional[str]:
+def download_youtube_to_mp3(url, output_dir='./', filename="test"):
+    """
+    Downloads a YouTube video as an MP3 file.
+
+    Parameters:
+    url (str): The URL of the YouTube video to download.
+    output_dir (str, optional): The directory to save the MP3 file. Defaults to the current working directory.
+    filename (str, optional): The filename for the MP3 file. If not provided, the video title will be used.
+
+    Returns:
+    pathlib.Path: The path to the downloaded MP3 file.
+    """
+    # Create the output directory if it doesn't exist
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Set the output filename
+    if filename is None:
+        filename = "%(title)s.%(ext)s"
+    else:
+        filename = f"{filename}.%(ext)s"
+
+    # Download the video using yt_dlp
+    ydl_opts = {
+        'outtmpl': str(output_dir / filename),
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+    }
+
     try:
-        yt = YouTube(url)
-        audio_stream = yt.streams.filter(only_audio=True).first()
-
-        if audio_stream is None:
-            logging.warning("No audio streams found")
-            return None
-
-        Path(output_path).mkdir(parents=True, exist_ok=True)
-
-        mp3_file_path = os.path.join(output_path, filename + ".mp3")
-        logging.info(f"Downloading started... {mp3_file_path}")
-
-        downloaded_file_path = audio_stream.download(output_path)
-
-        audio_clip = AudioFileClip(downloaded_file_path)
-        audio_clip.write_audiofile(mp3_file_path, codec="libmp3lame", verbose=False, logger=None)
-        audio_clip.close()
-
-        if Path(downloaded_file_path).suffix != ".mp3":
-            os.remove(downloaded_file_path)
-
-        logging.info(f"Download and conversion successful. File saved at: {mp3_file_path}")
-        return str(mp3_file_path)
-
-    except Exception as e:
-        logging.error(f"An error occurred: {e}")
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+    except yt_dlp.utils.DownloadError as e:
+        logging.error(f"Error downloading video: {e}")
         return None
+
+    output_path = output_dir / filename.replace('%(ext)s', 'mp3')
+    logging.info(f"Downloaded {output_path} as MP3")
+    return str(output_path)

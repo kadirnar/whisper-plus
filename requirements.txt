@@ -1,7 +1,7 @@
 torch>=2.0.0
 torchvision>=0.15.0
 moviepy>=1.0.3
-pytube>=15.0.0
+yt_dlp
 Requests>=2.31.0
 accelerate
 bitsandbytes
