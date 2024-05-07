@@ -97,6 +97,10 @@ print(summary_text)
 
 ### 💬 Speaker Diarization
 
+```bash
+pip install pyannote.audio>=3.1.0 pyannote.core>=5.0.0 pyannote.database>=5.0.1 pyannote.metrics>=3.2.1 pyannote.pipeline>=3.0.1 torchaudio>=2.0.0
+```
+
 ```python
 from whisperplus import (
     ASRDiarizationPipeline,
@@ -122,6 +126,10 @@ print(dialogue)
 
 ### ⭐ RAG - Chat with Video(LanceDB)
 
+```bash
+pip install sentence-transformers ctransformers langchain
+```
+
 ```python
 from whisperplus.pipelines.chatbot import ChatWithVideo
 
@@ -139,6 +147,10 @@ print(response)
 ```
 
 ### 🌠 RAG - Chat with Video(AutoLLM)
+
+```bash
+pip install autollm>=0.1.9
+```
 
 ```python
 from whisperplus import AutoLLMChatWithVideo
@@ -198,7 +210,7 @@ caption(video_path="test.mp4", output_path="output.mp4", language="turkish")
 ## 😍 Contributing
 
 ```bash
-pip install -r dev-requirements.txt
+pip install pre-commit
 pre-commit install
 pre-commit run --all-files
 ```
