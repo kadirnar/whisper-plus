@@ -97,8 +97,15 @@ print(summary_text)
 
 ### 💬 Speaker Diarization
 
+You must confirm the licensing permissions of these two models.
+
+- https://huggingface.co/pyannote/speaker-diarization-3.1
+- https://huggingface.co/pyannote/segmentation-3.0
+
 ```bash
-pip install pyannote.audio>=3.1.0 pyannote.core>=5.0.0 pyannote.database>=5.0.1 pyannote.metrics>=3.2.1 pyannote.pipeline>=3.0.1 torchaudio>=2.0.0
+pip install -r speaker_diarization.txt
+pip install -U "huggingface_hub[cli]"
+huggingface-cli login
 ```
 
 ```python
@@ -110,7 +117,7 @@ audio_path = download_youtube_to_mp3("https://www.youtube.com/watch?v=mRB14sFHw2
 device = "cuda"  # cpu or mps
 pipeline = ASRDiarizationPipeline.from_pretrained(
     asr_model="openai/whisper-large-v3",
-    diarizer_model="pyannote/speaker-diarization",
+    diarizer_model="pyannote/speaker-diarization-3.1",
     use_auth_token=False,
     chunk_length_s=30,
     device=device,
