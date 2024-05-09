@@ -9,3 +9,4 @@ hqq
 ffmpeg
 ffmpeg-python
 pre-commit
+fire
