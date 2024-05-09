@@ -58,7 +58,6 @@ bnb_config = BitsAndBytesConfig(
 pipeline = SpeechToTextPipeline(
     model_id="distil-whisper/distil-large-v3",
     quant_config=hqq_config,
-    hqq=True,
     flash_attention_2=True,
 )
 
