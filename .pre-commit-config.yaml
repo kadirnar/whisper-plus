@@ -55,15 +55,6 @@ repos:
       - id: flake8
         name: Flake8 linting
 
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.6
-    hooks:
-      - id: codespell
-        args:
-          - --ignore-words-list=crate,nd,strack,dota,ane,segway,fo,gool,winn
-          # skip inline comments
-          - --skip="*.py:.*#.*,*ipynb"
-
   - repo: https://github.com/PyCQA/docformatter
     rev: v1.7.5
     hooks:

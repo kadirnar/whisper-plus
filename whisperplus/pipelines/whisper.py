@@ -1,8 +1,7 @@
 import logging
 from typing import Optional
 
-import torch
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
+from transformers import pipeline
 
 from whisperplus.model.load_model import load_model_whisper
 
