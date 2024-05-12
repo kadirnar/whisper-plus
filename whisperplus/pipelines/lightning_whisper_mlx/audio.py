@@ -3,7 +3,7 @@
 import os
 from functools import lru_cache
 from subprocess import CalledProcessError, run
-from typing import Union
+from typing import Optional, Union
 
 import mlx.core as mx
 import numpy as np
@@ -13,8 +13,8 @@ SAMPLE_RATE = 16000
 N_FFT = 400
 HOP_LENGTH = 160
 CHUNK_LENGTH = 30
-N_SAMPLES = CHUNK_LENGTH * SAMPLE_RATE  # 480000 samples in a 30-second chunk
-N_FRAMES = N_SAMPLES // HOP_LENGTH  # 3000 frames in a mel spectrogram input
+N_SAMPLES = CHUNK_LENGTH * SAMPLE_RATE
+N_FRAMES = N_SAMPLES // HOP_LENGTH
 
 N_SAMPLES_PER_TOKEN = HOP_LENGTH * 2  # the initial convolutions has stride 2
 FRAMES_PER_SECOND = SAMPLE_RATE // HOP_LENGTH  # 10ms per audio frame
