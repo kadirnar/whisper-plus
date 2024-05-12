@@ -74,7 +74,7 @@ transcript = pipeline(
 print(transcript)
 ```
 
-### Apple MLX
+### 🍎 Apple MLX
 
 ```python
 from whisperplus.pipelines import mlx_whisper
