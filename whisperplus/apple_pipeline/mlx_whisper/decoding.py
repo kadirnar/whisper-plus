@@ -8,8 +8,8 @@ import mlx.core as mx
 import numpy as np
 from mlx.utils import tree_map
 
-from .audio import CHUNK_LENGTH
-from .tokenizer import Tokenizer, get_tokenizer
+from whisperplus.apple_pipeline.mlx_whisper.audio import CHUNK_LENGTH
+from whisperplus.apple_pipeline.mlx_whisper.tokenizer import Tokenizer, get_tokenizer
 
 
 def compression_ratio(text) -> float:

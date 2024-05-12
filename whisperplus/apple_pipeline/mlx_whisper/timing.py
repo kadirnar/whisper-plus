@@ -2,18 +2,15 @@
 
 import itertools
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, List
+from typing import List
 
 import mlx.core as mx
 import numba
 import numpy as np
 from scipy import signal
 
-from .audio import HOP_LENGTH, SAMPLE_RATE, TOKENS_PER_SECOND
-from .tokenizer import Tokenizer
-
-if TYPE_CHECKING:
-    from .model import Whisper
+from whisperplus.apple_pipeline.mlx_whisper.audio import HOP_LENGTH, SAMPLE_RATE, TOKENS_PER_SECOND
+from whisperplus.apple_pipeline.mlx_whisper.tokenizer import Tokenizer
 
 
 def median_filter(x: np.ndarray, filter_width: int):
@@ -106,7 +103,7 @@ class WordTiming:
 
 
 def find_alignment(
-    model: "Whisper",
+    model,
     tokenizer: Tokenizer,
     text_tokens: List[int],
     mel: mx.array,
@@ -206,7 +203,7 @@ def merge_punctuations(alignment: List[WordTiming], prepended: str, appended: st
 def add_word_timestamps(
     *,
     segments: List[dict],
-    model: "Whisper",
+    model,
     tokenizer: Tokenizer,
     mel: mx.array,
     num_frames: int,

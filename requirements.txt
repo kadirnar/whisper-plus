@@ -10,3 +10,10 @@ ffmpeg
 ffmpeg-python
 pre-commit
 fire
+tqdm
+more-itertools
+tiktoken
+huggingface_hub
+scipy
+mlx>=0.11
+numba

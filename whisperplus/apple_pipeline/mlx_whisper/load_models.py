@@ -8,7 +8,7 @@ import mlx.nn as nn
 from huggingface_hub import snapshot_download
 from mlx.utils import tree_unflatten
 
-from . import whisper
+from whisperplus.apple_pipeline.mlx_whisper import whisper
 
 
 def load_model(

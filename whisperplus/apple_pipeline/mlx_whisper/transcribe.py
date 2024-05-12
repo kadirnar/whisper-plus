@@ -8,6 +8,11 @@ import mlx.core as mx
 import numpy as np
 import tqdm
 
+from whisperplus.apple_pipeline.mlx_whisper.decoding import DecodingOptions, DecodingResult
+from whisperplus.apple_pipeline.mlx_whisper.load_models import load_model
+from whisperplus.apple_pipeline.mlx_whisper.timing import add_word_timestamps
+from whisperplus.apple_pipeline.mlx_whisper.tokenizer import LANGUAGES, get_tokenizer
+
 from .audio import (
     FRAMES_PER_SECOND,
     HOP_LENGTH,
@@ -17,10 +22,6 @@ from .audio import (
     log_mel_spectrogram,
     pad_or_trim,
 )
-from .decoding import DecodingOptions, DecodingResult
-from .load_models import load_model
-from .timing import add_word_timestamps
-from .tokenizer import LANGUAGES, get_tokenizer
 
 
 def _format_timestamp(seconds: float):

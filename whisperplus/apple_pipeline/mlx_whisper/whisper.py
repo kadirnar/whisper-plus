@@ -10,8 +10,8 @@ import mlx.core as mx
 import mlx.nn as nn
 import numpy as np
 
-from .decoding import decode as decode_function
-from .decoding import detect_language as detect_language_function
+from whisperplus.apple_pipeline.mlx_whisper.decoding import decode as decode_function
+from whisperplus.apple_pipeline.mlx_whisper.decoding import detect_language as detect_language_function
 
 
 @dataclass
