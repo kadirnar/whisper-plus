@@ -49,6 +49,8 @@ models = {
     },
     "distil-large-v3": {
         "base": "mustafaaljadery/distil-whisper-mlx",
+        "4bit": "mustafaaljadery/distil-whisper-mlx-4bit",
+        "8bit": "mustafaaljadery/distil-whisper-mlx-8bit",
     },
 }
 
@@ -91,9 +93,10 @@ class LightningWhisperMLX():
         hf_hub_download(repo_id=repo_id, filename=filename2, local_dir=local_dir)
 
     def transcribe(self, audio_path, language=None):
+        breakpoint()
         result = transcribe_audio(
             audio_path,
-            path_or_hf_repo=f'./mlx_models/{self.name}',
+            path_or_hf_repo=f'mlx_models/{self.name}',
             language=language,
             batch_size=self.batch_size)
         return result
