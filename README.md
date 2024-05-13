@@ -89,6 +89,19 @@ text = mlx_whisper.transcribe(
 print(text)
 ```
 
+### 🍏 Lightning Mlx Whisper
+
+```python
+from whisperplus.pipelines.lightning_whisper_mlx import LightningWhisperMLX
+from whisperplus import download_youtube_to_mp3
+
+url = "https://www.youtube.com/watch?v=1__CAdTJ5JU"
+audio_path = download_youtube_to_mp3(url)
+
+whisper = LightningWhisperMLX(model="distil-large-v3", batch_size=12, quant=None)
+output = whisper.transcribe(audio_path=audio_path)["text"]
+```
+
 ### 📰 Summarization
 
 ```python
