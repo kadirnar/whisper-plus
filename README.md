@@ -130,7 +130,7 @@ You must confirm the licensing permissions of these two models.
 - https://huggingface.co/pyannote/segmentation-3.0
 
 ```bash
-pip install -r speaker_diarization.txt
+pip install -r requirements/speaker_diarization.txt
 pip install -U "huggingface_hub[cli]"
 huggingface-cli login
 ```
