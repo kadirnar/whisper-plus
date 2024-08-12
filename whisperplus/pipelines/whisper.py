@@ -3,7 +3,7 @@ from typing import Optional
 
 from transformers import pipeline
 
-from whisperplus.model.load_model import load_model_whisper
+from model.load_model import load_model_whisper
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
