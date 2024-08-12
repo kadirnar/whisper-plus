@@ -1,9 +1,8 @@
 import logging
 from typing import Optional
 
-from transformers import pipeline
-
 from model.load_model import load_model_whisper
+from transformers import pipeline
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
