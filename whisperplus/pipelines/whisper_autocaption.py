@@ -56,7 +56,7 @@ class WhisperAutoCaptionPipeline:
             end_time = chunk['timestamp'][1]
 
             # Altyazının genişliğini ve konumunu ayarla
-            txt_clip = TextClip(text, fontsize=24, color='white', bg_color='black', size=(max_width, None))
+            txt_clip = TextClip(text, font_size=24, color='white', bg_color='black', size=(max_width, None))
             txt_clip = txt_clip.set_position(
                 ('center', 'bottom')).set_start(start_time).set_duration(end_time - start_time)
             subtitles_clips.append(txt_clip)
