@@ -3,7 +3,7 @@ import tempfile
 
 import ffmpeg
 import torch
-from moviepy.editor import CompositeVideoClip, TextClip, VideoFileClip
+from moviepy import CompositeVideoClip, TextClip, VideoFileClip
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
