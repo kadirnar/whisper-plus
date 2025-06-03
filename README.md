@@ -1,6 +1,6 @@
 <div align="center">
 <h2>
-    WhisperPlus: Faster, Smarter, and More Capable 🚀
+    WhisperPlus: Faster, and More Capable 🚀
 </h2>
 <div>
     <img width="500" alt="teaser" src="doc\openai-whisper.jpg">
