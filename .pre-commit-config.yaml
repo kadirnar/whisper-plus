@@ -20,7 +20,7 @@ repos:
           - --allow-missing-credentials
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.1
+    rev: v3.20.0
     hooks:
       - id: pyupgrade
         name: Upgrade code
@@ -56,6 +56,6 @@ repos:
         name: Flake8 linting
 
   - repo: https://github.com/PyCQA/docformatter
-    rev: v1.7.5
+    rev: v1.7.7
     hooks:
       - id: docformatter
