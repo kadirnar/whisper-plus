@@ -5,7 +5,9 @@
 <div>
     <img width="500" alt="teaser" src="doc\openai-whisper.jpg">
 </div>
-<div>
+    <a href="https://trendshift.io/repositories/6007" target="_blank"><img src="https://trendshift.io/api/badge/repositories/6007" alt="kadirnar%2Fwhisper-plus | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+
+<div>    
     <a href="https://pypi.org/project/whisperplus" target="_blank">
         <img src="https://img.shields.io/pypi/pyversions/whisperplus.svg?color=%2334D058" alt="Supported Python versions">
     </a>
