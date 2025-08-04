@@ -356,7 +356,9 @@ def get_encoding(name: str = "gpt2", num_languages: int = 99):
     return tiktoken.Encoding(
         name=os.path.basename(vocab_path),
         explicit_n_vocab=n_vocab,
-        pat_str=r"""'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+""",
+        pat_str=\
+                r"""'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+"""
+                                                                                                 ,
         mergeable_ranks=ranks,
         special_tokens=special_tokens,
     )

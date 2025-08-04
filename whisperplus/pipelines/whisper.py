@@ -63,17 +63,17 @@ class SpeechToTextPipeline:
         prepare_for_inference(model.model.decoder, backend="torchao_int4")
 
         model = self.compile_model(model)
-        
+
         return model, processor
 
     def load_model_whisper(
-        self,
-        model_id: str = "distil-whisper/distil-large-v3",
-        quant_config=None,
-        hqq_compile: bool = False,
-        flash_attention_2: bool = False,
-        device=None):
-        
+            self,
+            model_id: str = "distil-whisper/distil-large-v3",
+            quant_config=None,
+            hqq_compile: bool = False,
+            flash_attention_2: bool = False,
+            device=None):
+
         if hqq_compile:
             return self.hqq_compile_model(model_id, quant_config, device)
         else:
@@ -134,7 +134,6 @@ class SpeechToTextPipeline:
         Returns:
             str: Transcribed text from the audio.
         """
-
         pipe = pipeline(
             "automatic-speech-recognition",
             model=self.model,

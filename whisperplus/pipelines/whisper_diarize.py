@@ -50,8 +50,8 @@ class ASRDiarizationPipeline:
         **kwargs,
     ):
         """
-        Transcribe the audio sequence(s) given as inputs to text and label with speaker information. The input
-        audio is first passed to the speaker diarization pipeline, which returns timestamps for 'who spoke
+        Transcribe the audio sequence(s) given as inputs to text and label with speaker information. audio is
+        first passed to the speaker diarization pipeline, which returns timestamps for 'who spoke The input
         when'. The audio is then passed to the ASR pipeline, which returns utterance-level transcriptions and
         their corresponding timestamps. The speaker diarizer timestamps are aligned with the ASR transcription
         timestamps to give speaker-labelled transcriptions. We cannot use the speaker diarization timestamps

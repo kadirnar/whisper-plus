@@ -37,7 +37,6 @@ def load_audio(file: str, sr: int = SAMPLE_RATE):
     -------
     A NumPy array containing the audio waveform, in float32 dtype.
     """
-
     # This launches a subprocess to decode audio while down-mixing
     # and resampling as necessary.  Requires the ffmpeg CLI in PATH.
     # fmt: off
@@ -79,8 +78,8 @@ def pad_or_trim(array, length: int = N_SAMPLES, *, axis: int = -1):
 @lru_cache(maxsize=None)
 def mel_filters(n_mels: int) -> mx.array:
     """
-    Load the mel filterbank matrix for projecting STFT into a Mel spectrogram. Allows decoupling librosa
-    dependency; saved using:
+    Load the mel filterbank matrix for projecting STFT into a Mel spectrogram. dependency; saved using: Allows
+    decoupling librosa.
 
     np.savez_compressed(     "mel_filters.npz",     mel_80=librosa.filters.mel(sr=16000, n_fft=400,
     n_mels=80),     mel_128=librosa.filters.mel(sr=16000, n_fft=400, n_mels=128), )

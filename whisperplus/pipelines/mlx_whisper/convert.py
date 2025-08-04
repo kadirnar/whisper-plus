@@ -135,7 +135,6 @@ def load_torch_model(
     model : Whisper
         The Whisper ASR model instance
     """
-
     if download_root is None:
         download_root = os.path.join(os.path.expanduser("~"), ".cache/whisper")
 
