@@ -105,7 +105,6 @@ def speaker_diarization(url, model_id, device, num_speakers, min_speaker, max_sp
         transcript (str): The transcript of the speech-to-text conversion.
         video_path (str): The path of the downloaded video.
     """
-
     pipeline = ASRDiarizationPipeline.from_pretrained(
         asr_model=model_id,
         diarizer_model="pyannote/speaker-diarization",
