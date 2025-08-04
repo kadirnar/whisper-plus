@@ -10,3 +10,4 @@ ffmpeg
 ffmpeg-python
 pre-commit
 fire
+transformers
